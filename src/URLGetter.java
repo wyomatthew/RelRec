@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -14,82 +13,78 @@ import java.util.Scanner;
  */
 public class URLGetter {
 
-	private URL url;
-	private HttpURLConnection httpConnection;
+    private URL url;
+    private HttpURLConnection httpConnection;
 
-	public URLGetter(String url) {
-		try {
-			this.url = new URL(url);
+    public URLGetter(String url) {
+        try {
+            this.url = new URL(url);
 
-			URLConnection connection = this.url.openConnection();
-			httpConnection = (HttpURLConnection) connection;
+            URLConnection connection = this.url.openConnection();
+            httpConnection = (HttpURLConnection) connection;
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * This method will print the status codes from the connection.
-	 */
-	public void printStatusCode() {
-		try {
-			int code = httpConnection.getResponseCode();
-			String message = httpConnection.getResponseMessage();
+    /**
+     * This method will print the status codes from the connection.
+     */
+    public void printStatusCode() {
+        try {
+            int code = httpConnection.getResponseCode();
+            String message = httpConnection.getResponseMessage();
 
-			System.out.println(code + " : " + message);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public HttpURLConnection getConnection() {
-		return this.httpConnection;
-	}
+            System.out.println(code + " : " + message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * The method will return the contents of the page
-	 * 
-	 * @return the arraylist of strings for each line on the page
-	 */
-	public ArrayList<String> getContents() {
-		ArrayList<String> contents = new ArrayList<String>();
+    public HttpURLConnection getConnection() {
+        return this.httpConnection;
+    }
 
-		try {
-			Scanner in = new Scanner(httpConnection.getInputStream());
+    /**
+     * The method will return the contents of the page
+     * 
+     * @return the arraylist of strings for each line on the page
+     */
+    public ArrayList<String> getContents() {
+        ArrayList<String> contents = new ArrayList<String>();
 
-			while (in.hasNextLine()) {
-				String line = in.nextLine();
-				contents.add(line);
-			}
+        try {
+            Scanner in = new Scanner(httpConnection.getInputStream());
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            while (in.hasNextLine()) {
+                String line = in.nextLine();
+                contents.add(line);
+            }
 
-		return contents;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-	}
+        return contents;
 
-	/**
-	 * 
-	 */
-	public URL getRedirectURL() {
-		try {
-			int code = httpConnection.getResponseCode();
+    }
 
-			if (code >= 300 && code < 400) {
-				String redirect = httpConnection.getHeaderField("Location");
-				return new URL(redirect);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
+    /**
+     * 
+     */
+    public URL getRedirectURL() {
+        try {
+            int code = httpConnection.getResponseCode();
 
-		return null;
-	}
+            if (code >= 300 && code < 400) {
+                String redirect = httpConnection.getHeaderField("Location");
+                return new URL(redirect);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
