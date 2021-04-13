@@ -18,6 +18,9 @@ public class YelpGetter {
     private static final String reqBaseBusiness = "https://api.yelp.com/v3/businesses/search?";
     private static final String reqBaseCategory = "https://api.yelp.com/v3/categories?";
     private static final String key = "Bearer y0ygyyghI5JK4vcMW4MNgi3-wY_k6pSIVOEg9g-g34WPp9kJJZS9uRrV_WQTt2FulH4Ni1axPQ3dAmXo0d8jPs1izmltTQ1Z1xa9bznUN3dZcqZw2SRbzAV8S4F0YHYx";
+    private static final double[] MATTHEWS_HOUSE = new double[] { 39.95556, -75.21339 };
+    private static final double[] GUADALAJARA = new double[] { 20.666841, -103.361932 };
+    private static final double[] ROME = new double[] { 41.8933203, 12.4829321 };
 
     /**
      * Constructs YelpGetter from inputted coordinates, search radius, and relevant
@@ -188,6 +191,22 @@ public class YelpGetter {
     }
 
     /**
+     * Testing function to print all businesses of a YelpGetter to the console
+     */
+    public void printAllBusinesses() {
+        // get array of businesses
+        Business[] businesses = this.getBusinesses();
+
+        // iterate through all businesses
+        for (int i = 0; i < businesses.length; i++) {
+            Business curr = businesses[i];
+
+            // print current business
+            System.out.println(curr.toString());
+        }
+    }
+
+    /**
      * Uses the user's latitude and longitude to identify a locale and get all
      * searchable categories by the Yelp API
      * 
@@ -311,12 +330,7 @@ public class YelpGetter {
     }
 
     public static void main(String[] args) {
-        YelpGetter yg = new YelpGetter(20.666841, -103.361932, 40000);
-        Business[] businesses = yg.getBusinesses();
-        System.out.println(yg.getRequest());
-        for (int i = 0; i < businesses.length; i++) {
-            Business curr = businesses[i];
-            System.out.println(curr.toString());
-        }
+        YelpGetter yg = new YelpGetter(ROME[0], ROME[1], 40000, "Pizza");
+        yg.printAllBusinesses();
     }
 }
