@@ -6,8 +6,11 @@ import uk.recurse.geocoding.reverse.Country;
 import uk.recurse.geocoding.reverse.ReverseGeocoder;
 
 /**
+ * Class dedicated to manage the getting of relevant, nearby businesses given a
+ * user's inputted geocoordinates, search radius, and search categories.
+ * 
  * @author Matthew
- *
+ * 
  */
 public class YelpGetter {
     // initialize fields
@@ -184,6 +187,14 @@ public class YelpGetter {
         return this.request;
     }
 
+    /**
+     * Uses the user's latitude and longitude to identify a locale and get all
+     * searchable categories by the Yelp API
+     * 
+     * @param lat Latitude of user position
+     * @param lon Longitude of user position
+     * @return Category array of all valid categories within the user's region
+     */
     private static Category[] getValidCategories(double lat, double lon) {
         // initialize request to access valid categories
         String categoryRequest = reqBaseCategory;
