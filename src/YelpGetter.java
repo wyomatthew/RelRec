@@ -17,11 +17,12 @@ public class YelpGetter {
     private static final String key = "Bearer y0ygyyghI5JK4vcMW4MNgi3-wY_k6pSIVOEg9g-g34WPp9kJJZS9uRrV_WQTt2FulH4Ni1axPQ3dAmXo0d8jPs1izmltTQ1Z1xa9bznUN3dZcqZw2SRbzAV8S4F0YHYx";
 
     /**
-     * Constructs YelpGetter from inputted coordinates, search radius, and relevant category
+     * Constructs YelpGetter from inputted coordinates, search radius, and relevant
+     * category
      *
-     * @param lat Starting latitude (-90 <= lat <= 90)
-     * @param lon Starting longitude (-180 <= lon <= 180)
-     * @param rad Radius within which to search (0 <= rad <= 40000)
+     * @param lat      Starting latitude (-90 <= lat <= 90)
+     * @param lon      Starting longitude (-180 <= lon <= 180)
+     * @param rad      Radius within which to search (0 <= rad <= 40000)
      * @param category Category in which to search for businesses
      */
     public YelpGetter(double lat, double lon, int rad, String category) {
@@ -34,7 +35,8 @@ public class YelpGetter {
             throw new IllegalArgumentException("Invalid Radius");
         }
 
-        // case on whether or not inputted category is a valid category in inputted coordinates
+        // case on whether or not inputted category is a valid category in inputted
+        // coordinates
         Category[] validCategories = getValidCategories(lat, lon);
         boolean isValid = false;
         String categoryAlias = category;
@@ -60,13 +62,14 @@ public class YelpGetter {
         }
 
         if (isValid) {
-            // inputted category isValid, build query from inputted coordinates and got alias
-            this.request = reqBaseBusiness + "latitude=" + lat + "&longitude=" + lon + "&radius=" + rad + "&categories=" + categoryAlias;
+            // inputted category isValid, build query from inputted coordinates and got
+            // alias
+            this.request = reqBaseBusiness + "latitude=" + lat + "&longitude=" + lon + "&radius=" + rad + "&categories="
+                    + categoryAlias;
         } else {
             throw new IllegalArgumentException("Inputted Category Invalid");
         }
     }
-
 
     /**
      * Constructs YelpGetter from inputted coordinates, and search radius
@@ -163,15 +166,7 @@ public class YelpGetter {
             }
 
             // build current business
-            Business currBusiness = new Business(name,
-                    lat,
-                    lon,
-                    reviewCount,
-                    rating,
-                    price,
-                    address,
-                    phone,
-                    distance,
+            Business currBusiness = new Business(name, lat, lon, reviewCount, rating, price, address, phone, distance,
                     categories);
 
             // add current business to businesses array
@@ -238,7 +233,6 @@ public class YelpGetter {
                 int numParents = parentAliasArr.size();
 
                 Set<String> parentAliases = new HashSet<String>();
-
 
                 // add all parent aliases in array to String array of aliases
                 for (int parentIndex = 0; parentIndex < numParents; parentIndex++) {
