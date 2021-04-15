@@ -1,9 +1,12 @@
+package src;
+
 import java.net.*;
 import java.util.*;
 import com.google.gson.*;
 
 import uk.recurse.geocoding.reverse.Country;
 import uk.recurse.geocoding.reverse.ReverseGeocoder;
+
 // Test Eclipse change
 /**
  * Class dedicated to manage the getting of relevant, nearby businesses given a
