@@ -18,9 +18,10 @@ public class Business {
     private String phone;
     private double distance;
     private Category[] categories;
+    private String reviews;
 
     public Business(String name, double lat, double lon, int reviewCount, double rating, String price, String address,
-            String phone, double distance, Category[] categories) {
+            String phone, double distance, Category[] categories, String reviews) {
         this.name = name;
         this.lat = lat;
         this.lon = lon;
@@ -31,6 +32,7 @@ public class Business {
         this.phone = phone;
         this.distance = distance;
         this.categories = categories;
+        this.setReviews(reviews);
     }
 
     /**
@@ -98,10 +100,25 @@ public class Business {
         return this.categories;
     }
 
+    @Override
     public String toString() {
         return getName() + " || Review Count = " + getReviewCount() + " || Rating = " + getRating() + " || Price = "
                 + getPrice() + " || Address = " + getAddress() + " || Phone = " + getPhone() + " || Distance = "
                 + getDistance();
+    }
+
+    /**
+     * @return the reviews
+     */
+    public String getReviews() {
+        return reviews;
+    }
+
+    /**
+     * @param reviews the reviews to set
+     */
+    public void setReviews(String reviews) {
+        this.reviews = reviews;
     }
 
 }

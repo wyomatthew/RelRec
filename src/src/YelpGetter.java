@@ -123,7 +123,8 @@ public class YelpGetter {
 
             // get all relevant primitive fields
             String name = currBusinessObj.get("name").getAsJsonPrimitive().getAsString();
-
+            String id = currBusinessObj.get("id").getAsJsonPrimitive().getAsString();
+            
             int reviewCount = currBusinessObj.get("review_count").getAsJsonPrimitive().getAsInt();
             double rating = currBusinessObj.get("rating").getAsJsonPrimitive().getAsDouble();
             String price;
@@ -135,6 +136,10 @@ public class YelpGetter {
             String phone = currBusinessObj.get("display_phone").getAsJsonPrimitive().getAsString();
             double distance = currBusinessObj.get("distance").getAsJsonPrimitive().getAsDouble();
 
+            // Make API calls here
+            String reviews = getReviews(id);
+            
+            
             // get coordinates
             JsonObject coordinateObj = currBusinessObj.getAsJsonObject("coordinates");
             double lat = coordinateObj.get("latitude").getAsJsonPrimitive().getAsDouble();
@@ -176,7 +181,7 @@ public class YelpGetter {
 
             // build current business
             Business currBusiness = new Business(name, lat, lon, reviewCount, rating, price, address, phone, distance,
-                    categories);
+                    categories, reviews);
 
             // add current business to businesses array
             businesses[businessIndex] = currBusiness;
@@ -184,6 +189,18 @@ public class YelpGetter {
 
         // return filled array of businesses
         return businesses;
+    }
+    
+    /**
+     * Helper functions of good use:
+     *  - getContentsFromRequest() : Gets big string of Json from request URL
+     *  - parseJsonStringToObject() : Gets JsonObject given Json big String
+     * 
+     * @param id
+     * @return Concatenated huge String of three reviews
+     */
+    public String getReviews(String id) {
+        return null;
     }
 
     /**
@@ -239,13 +256,22 @@ public class YelpGetter {
             // parse to string
             String lString = l.toString();
 
-            // generate category request for Yelp API from retrieved locale
+            // generate category request for Yelp API from retrieved locale ---- es_US
             categoryRequest += "locale=" + lString;
 
             // parse JsonObject from request
             String requestContents = getContentsFromRequest(categoryRequest);
             JsonObject categoryObj = parseJsonStringToObject(requestContents);
 
+            /*
+             * JsonElement
+             * JsonObject
+             * JsonArray
+             * JsonPrimitive
+             * 
+             * 
+             * */
+            
             // get array of categories from categoryObj
             JsonArray categoryArr = categoryObj.getAsJsonArray("categories");
             int numCategories = categoryArr.size();
@@ -309,6 +335,7 @@ public class YelpGetter {
         List<String> contents = url.getContents();
 
         // return first and only string of contents
+        System.out.println(contents.get(0));
         return contents.get(0);
     }
 
@@ -333,7 +360,8 @@ public class YelpGetter {
     }
 
     public static void main(String[] args) {
-        YelpGetter yg = new YelpGetter(ROME[0], ROME[1], 40000, "Pizza");
+        YelpGetter yg = new YelpGetter(51.514295, -0.093757, 40000, "Pizza");
+        System.out.println(yg.request);
         yg.printAllBusinesses();
     }
 }
