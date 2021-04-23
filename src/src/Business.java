@@ -32,7 +32,7 @@ public class Business {
         this.phone = phone;
         this.distance = distance;
         this.categories = categories;
-        this.setReviews(reviews);
+        this.reviews = reviews;
     }
 
     /**
@@ -112,13 +112,6 @@ public class Business {
      */
     public String getReviews() {
         return reviews;
-    }
-
-    /**
-     * @param reviews the reviews to set
-     */
-    public void setReviews(String reviews) {
-        this.reviews = reviews;
     }
 
 }
