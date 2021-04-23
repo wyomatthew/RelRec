@@ -37,11 +37,11 @@ public class YelpGetter {
     public YelpGetter(double lat, double lon, int rad, String category) {
         // verify lat, lon, and radius are valid
         if (lat > 90 || lat < -90) {
-            throw new IllegalArgumentException("Invalid Latitude");
+            throw new IllegalArgumentException("Latitude must be within -90 <= lat <= 90");
         } else if (lon < -180 || lon > 180) {
-            throw new IllegalArgumentException("Invalid Longitude");
+            throw new IllegalArgumentException("Longitude must be within -180 <= lon <= 180");
         } else if (rad < 0 || rad > 40000) {
-            throw new IllegalArgumentException("Invalid Radius");
+            throw new IllegalArgumentException("Radius must be positive and <= 40000");
         }
 
         // case on whether or not inputted category is a valid category in inputted
@@ -76,7 +76,7 @@ public class YelpGetter {
             this.request = reqBaseBusiness + "latitude=" + lat + "&longitude=" + lon + "&radius=" + rad + "&categories="
                     + categoryAlias;
         } else {
-            throw new IllegalArgumentException("Inputted Category Invalid");
+            throw new IllegalArgumentException("Category not found within Yelp's legal categories");
         }
     }
 
@@ -90,11 +90,11 @@ public class YelpGetter {
     public YelpGetter(double lat, double lon, int rad) {
         // verify lat, lon, and radius are valid
         if (lat > 90 || lat < -90) {
-            throw new IllegalArgumentException("Invalid Latitude");
+            throw new IllegalArgumentException("Latitude must be within -90 <= lat <= 90");
         } else if (lon < -180 || lon > 180) {
-            throw new IllegalArgumentException("Invalid Longitude");
+            throw new IllegalArgumentException("Longitude must be within -180 <= lon <= 180");
         } else if (rad < 0 || rad > 40000) {
-            throw new IllegalArgumentException("Invalid Radius");
+            throw new IllegalArgumentException("Radius must be positive and <= 40000");
         }
 
         // build query from inputted coordinates
@@ -315,7 +315,7 @@ public class YelpGetter {
             return categories;
         } else {
             // country was not retrieved, throw exception
-            throw new IllegalArgumentException("Invalid GeoCoordinates");
+            throw new IllegalArgumentException("Country could not be retrieved from inputted geocoordinates");
         }
     }
 
