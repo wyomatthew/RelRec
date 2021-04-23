@@ -335,7 +335,6 @@ public class YelpGetter {
         List<String> contents = url.getContents();
 
         // return first and only string of contents
-        System.out.println(contents.get(0));
         return contents.get(0);
     }
 
@@ -361,7 +360,6 @@ public class YelpGetter {
 
     public static void main(String[] args) {
         YelpGetter yg = new YelpGetter(51.514295, -0.093757, 40000, "Pizza");
-        System.out.println(yg.request);
         yg.printAllBusinesses();
     }
 }
