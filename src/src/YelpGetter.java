@@ -16,6 +16,8 @@ import uk.recurse.geocoding.reverse.ReverseGeocoder;
  * @author Matthew
  * 
  */
+// Change 1
+// Change 2
 public class YelpGetter {
     // initialize fields
     private String request;
