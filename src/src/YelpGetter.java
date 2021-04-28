@@ -7,8 +7,6 @@ import com.google.gson.*;
 import uk.recurse.geocoding.reverse.Country;
 import uk.recurse.geocoding.reverse.ReverseGeocoder;
 
-// Test Eclipse change
-// Test change from ZhuZhuPets
 /**
  * Class dedicated to manage the getting of relevant, nearby businesses given a
  * user's inputted geocoordinates, search radius, and search categories.
@@ -16,10 +14,6 @@ import uk.recurse.geocoding.reverse.ReverseGeocoder;
  * @author Matthew
  * 
  */
-// Change 1
-// Change 2
-
-// Change 3
 public class YelpGetter {
     // initialize fields
     private String request;
