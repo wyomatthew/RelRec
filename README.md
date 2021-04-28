@@ -1,33 +1,36 @@
-# UberPriceMapper
-The UberPriceMapper is a program utilizing Yelp and Uber APIs to take a user's inputted geocoordinates and search details to return a sorted list of recommended nearby businesses along with their corresponding estimate Uber prices.
+# Untitled NETS150 Project
+The UberPriceMapper is a program utilizing Yelp and Uber APIs to take a user's inputed geocoordinates and search details to return a sorted list of recommended nearby businesses along with their corresponding estimate Uber prices.
 
-## Running UberPriceMapper
-After downloading the most current version of the repository, enter the 'src' folder and run YelpGetter.java. For testing purposes, it currently includes a main method that creates a Yelp Getter with the latitude and longitude of Rome, Italy and returns a list of Yelp's businesses within 40000 meters carrying the category 'pizza' (yum!). As we build other parts to the UberPriceMapper, this will def change.
+## Building the project
+After downloading the most current version of the repository, enter the 'src' folder and run YelpGetter.java. For testing purposes, it currently includes a main method that creates a Yelp Getter with the latitude and longitude of Rome, Italy and returns a list of Yelp's businesses within 40000 meters carrying the category 'pizza' (yum!). As we build other parts of the project, we should expect this to change.
 
 ## Project Skeleton
 Pulling from our project proposal, we have the following 6 high level tasks:
 
-### 1. Translate user inputted location into data interpretable by Yelp API
-This is somewhat taken care of at the moment. A problem I encountered while building the functionality for the Yelp API was that Yelp localizes its legal search categories. That is, Yelp has some list of categories for each region that API calls can search within and they change depending on the region you're in. To solve this, I used an external library that translates geocoordinates (latitude and longitude) to locales (for example, en_US for English, United States). With that library already up and running, this step should be as simple as deciding whether we want to take inputs as a user's latitude and longitude (which is already functional) or add functionality to input an address.
+### 1. Take user inputed location and search to build query
+This is TODO. Later on, we'd like to use document search ideas plus cosine similarity to return the best businesses matching the user input. To do this, we need to be able to take in a user query and construct the vector we will use to compare against all business vectors when available. We need to make a few decisions here:
+* What metrics should we take from the user and what should be autofilled by the program? For example, I believe we will definitely want to autofill the rating field (since the user will always want the highest rated locations). Still, we will definitely want to take a user inputed restaurant type to compare against our business.
+* What information should we parse from the user search query as a category vs what should we parse for the document search for reviews? For example, if the user inputs Pizza, should we only get business from the Yelp API that say pizza? Or should we use that for document search in the review similarity portion? Both?
+
+### 2. Translate user inputed location into data interpretable by Yelp API
+Tentatively completed! We can consider implementing some more reverse geocoding to accept a user inputed address or use other external tools to use device location, but this is functional as is with latitude and longitude.
 
 ### 2. Call Yelp API to get reviews per location
-This is all done! Refer to the Class Design bit to see more regarding how this comes togther. I'll add that our original goal was to simply retrieve a list of businesses, their ratings, and their locations, but it was way too easy to add more funcitonality here so we also retreive information like their pricing scheme, their address, their phone number, review count, categories, etc.
+This is mostly completed. We need to complete the ``getReviews()`` method to also retrieve that when pulling all relevant businesses.
 
-### 3. Translate Yelp location and review information to be inrepretable by Uber API
-This is TO-DO. We get the latitude and longitude of each business from the Yelp API. I haven't taken a look at the Uber API docs yet, but I'm guessing that should be sufficient to feed it into the Uber API which would make this step pretty short.
+### 3. Form individual business vectors
+This is TODO. We need to take each business and all of its metrics to form one vector we can compare against the user query to return the best businesses. We should choose here what information to include in each vector.
 
-### 4. Call Uber API to get pricing
-This is TO-DO. After already learning and setting up the Java infrastructure to call the Yelp API, this shouldn't take _too_ long.
+### 4. Compute cosine similarity of each business to user query
+This is TODO. However, we have a nice equation for computing cosine similarity so this should be a pretty fast implementation. It's also worth noting here that I believe cosine similarity takes all dimensions of the vector as essentially weighted equally, so perhaps we should decide if its worth weighting certain fields.
 
-### 5. Implement equation/algorithm to determine user recommendations from information got from Yelp/Uber APIs
-This is TO-DO. We've got A LOT of info from the Yelp API and the Uber API should compliement it nicely. Big overall goal here is take that information, run it through our algorithm (hopefully using NETS150 principles), and get a handful of recommended restaurants out the other end. There are some important design decisions to make here:
-* What principles do we want to encode into our algorithim? i.e., what theoretical  ideas do we want to use to deliver the best recommendations?
-* What information do we want to use? We have access to product pricing, uber pricing, categories, distance, location, and much more, so what is the most relevant?
+### 5. Deliver recommendations
+This is TODO. There are some important design decisions to make here:
 * How many businesses do we want to recommend?
 * What information do we want to include with the recommendation? i.e. do we want to just deliver the recommendation? Or also include why that store was recommended?
 
 ### 6. Deliver recommendations to users
-This is TO-DO. I think this step is mainly just icing-on-top-the-cake. This could be as simple as 
+This is TODO. I think this step is mainly just icing-on-top-the-cake. This could be as simple as 
 ```Java
 System.out.println(recommendations.toString());
 ```
@@ -48,7 +51,7 @@ Defines a Category class to handle all necessary fields, constructors, and metho
 ### YelpGetter.java
 Degines a YelpGetter class to handle creation and execution of API calls to the Yelp API. Has an overloaded constructor allowing for the creation of an API call with or without a specifified category to search within. However, every created YelpGetter.java must be called with an inputted latitude, longitude, and search radius. Contains several helper functions managing what constitutes a legal category, how to parse out a received JSON file, and how to get the JSON file associated with a URL request.
 
-At a high level, YelpGetter.java functions with just one field: the URL to follow to interact with the Yelp API. Since every API call to the Yelp API must include a latitude and longitude, those are necessary elements to construct the YelpGetter. The radius is an added necessary input to create the URL because I believe the radius of the businesses to get is a necessary feature of our the UberPriceMapper. The category is an optional element of the URL because the Yelp API allows the making of calls that are and aren't specified by category. Once a YelpGetter is created and the URL field is created, one can call the ```getBusinesses()``` method to retrieve all businesses returned by the Yelp API for that particular request.
+At a high level, YelpGetter.java functions with just one field: the URL to follow to interact with the Yelp API. Since every API call to the Yelp API must include a latitude and longitude, those are necessary elements to construct the YelpGetter. The radius is an added necessary input to create the URL because I believe the radius of the businesses to get is a necessary feature of our the UberPriceMapper. The category is an optional element of the URL because the Yelp API allows the making of calls that are and aren't specified by category. Once a YelpGetter is created and the URL field is created, one can call the ``getBusinesses()`` method to retrieve all businesses returned by the Yelp API for that particular request.
 
 ## External Libraries
 So far, the UberPriceMapper takes advantage of two external libraries:
