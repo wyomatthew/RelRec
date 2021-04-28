@@ -1,5 +1,5 @@
 # Untitled NETS150 Project
-The UberPriceMapper is a program utilizing Yelp and Uber APIs to take a user's inputed geocoordinates and search details to return a sorted list of recommended nearby businesses along with their corresponding estimate Uber prices.
+The Untitled NETS150 Project is a program utilizing the Yelp API to take a user's inputed geocoordinates and search details to return a sorted list of recommended nearby businesses.
 
 ## Building the project
 After downloading the most current version of the repository, enter the 'src' folder and run YelpGetter.java. For testing purposes, it currently includes a main method that creates a Yelp Getter with the latitude and longitude of Rome, Italy and returns a list of Yelp's businesses within 40000 meters carrying the category 'pizza' (yum!). As we build other parts of the project, we should expect this to change.
@@ -51,10 +51,10 @@ Defines a Category class to handle all necessary fields, constructors, and metho
 ### YelpGetter.java
 Degines a YelpGetter class to handle creation and execution of API calls to the Yelp API. Has an overloaded constructor allowing for the creation of an API call with or without a specifified category to search within. However, every created YelpGetter.java must be called with an inputted latitude, longitude, and search radius. Contains several helper functions managing what constitutes a legal category, how to parse out a received JSON file, and how to get the JSON file associated with a URL request.
 
-At a high level, YelpGetter.java functions with just one field: the URL to follow to interact with the Yelp API. Since every API call to the Yelp API must include a latitude and longitude, those are necessary elements to construct the YelpGetter. The radius is an added necessary input to create the URL because I believe the radius of the businesses to get is a necessary feature of our the UberPriceMapper. The category is an optional element of the URL because the Yelp API allows the making of calls that are and aren't specified by category. Once a YelpGetter is created and the URL field is created, one can call the ``getBusinesses()`` method to retrieve all businesses returned by the Yelp API for that particular request.
+At a high level, YelpGetter.java functions with just one field: the URL to follow to interact with the Yelp API. Since every API call to the Yelp API must include a latitude and longitude, those are necessary elements to construct the YelpGetter. The radius is an added necessary input to create the URL because I believe the radius of the businesses to get is a necessary feature. The category is an optional element of the URL because the Yelp API allows the making of calls that are and aren't specified by category. Once a YelpGetter is created and the URL field is created, one can call the ``getBusinesses()`` method to retrieve all businesses returned by the Yelp API for that particular request.
 
 ## External Libraries
-So far, the UberPriceMapper takes advantage of two external libraries:
+We take advantage of two external libraries:
 * [Reverse Country Code by bencampion](https://github.com/bencampion/reverse-country-code)
 Used under the Apache-2.0 License
 * [Gson by Google Inc.](https://github.com/google/gson)
