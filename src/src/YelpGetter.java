@@ -123,7 +123,7 @@ public class YelpGetter {
             // get all relevant primitive fields
             String name = currBusinessObj.get("name").getAsJsonPrimitive().getAsString();
             String id = currBusinessObj.get("id").getAsJsonPrimitive().getAsString();
-            
+
             int reviewCount = currBusinessObj.get("review_count").getAsJsonPrimitive().getAsInt();
             double rating = currBusinessObj.get("rating").getAsJsonPrimitive().getAsDouble();
             String price;
@@ -137,8 +137,7 @@ public class YelpGetter {
 
             // Make API calls here
             String reviews = getReviews(id);
-            
-            
+
             // get coordinates
             JsonObject coordinateObj = currBusinessObj.getAsJsonObject("coordinates");
             double lat = coordinateObj.get("latitude").getAsJsonPrimitive().getAsDouble();
@@ -189,11 +188,11 @@ public class YelpGetter {
         // return filled array of businesses
         return businesses;
     }
-    
+
     /**
-     * Helper functions of good use:
-     *  - getContentsFromRequest() : Gets big string of Json from request URL
-     *  - parseJsonStringToObject() : Gets JsonObject given Json big String
+     * Helper functions of good use: - getContentsFromRequest() : Gets big string of
+     * Json from request URL - parseJsonStringToObject() : Gets JsonObject given
+     * Json big String
      * 
      * @param id
      * @return Concatenated huge String of three reviews
@@ -263,14 +262,11 @@ public class YelpGetter {
             JsonObject categoryObj = parseJsonStringToObject(requestContents);
 
             /*
-             * JsonElement
-             * JsonObject
-             * JsonArray
-             * JsonPrimitive
+             * JsonElement JsonObject JsonArray JsonPrimitive
              * 
              * 
-             * */
-            
+             */
+
             // get array of categories from categoryObj
             JsonArray categoryArr = categoryObj.getAsJsonArray("categories");
             int numCategories = categoryArr.size();
