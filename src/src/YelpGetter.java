@@ -7,8 +7,6 @@ import com.google.gson.*;
 import uk.recurse.geocoding.reverse.Country;
 import uk.recurse.geocoding.reverse.ReverseGeocoder;
 
-// Test Eclipse change
-// Github notice me
 /**
  * Class dedicated to manage the getting of relevant, nearby businesses given a
  * user's inputted geocoordinates, search radius, and search categories.
