@@ -23,6 +23,7 @@ public class YelpGetter {
     private static final double[] MATTHEWS_HOUSE = new double[] { 39.95556, -75.21339 };
     private static final double[] GUADALAJARA = new double[] { 20.666841, -103.361932 };
     private static final double[] ROME = new double[] { 41.8933203, 12.4829321 };
+    private static final String TEST_ID = "8jNOl4h8Z6iibXxY6Tx3vQ";
 
     /**
      * Constructs YelpGetter from inputted coordinates, search radius, and relevant
@@ -121,27 +122,27 @@ public class YelpGetter {
             JsonObject currBusinessObj = businessesArr.get(businessIndex).getAsJsonObject();
 
             // get all relevant primitive fields
-            String name = currBusinessObj.get("name").getAsJsonPrimitive().getAsString();
-            String id = currBusinessObj.get("id").getAsJsonPrimitive().getAsString();
+            String name = currBusinessObj.getAsJsonPrimitive("name").getAsString();
+            String id = currBusinessObj.getAsJsonPrimitive("id").getAsString();
 
-            int reviewCount = currBusinessObj.get("review_count").getAsJsonPrimitive().getAsInt();
-            double rating = currBusinessObj.get("rating").getAsJsonPrimitive().getAsDouble();
+            int reviewCount = currBusinessObj.getAsJsonPrimitive("review_count").getAsInt();
+            double rating = currBusinessObj.getAsJsonPrimitive("rating").getAsDouble();
             String price;
             try {
-                price = currBusinessObj.get("price").getAsJsonPrimitive().getAsString();
+                price = currBusinessObj.getAsJsonPrimitive("price").getAsString();
             } catch (Exception e) {
                 price = "Pricing Unknown";
             }
-            String phone = currBusinessObj.get("display_phone").getAsJsonPrimitive().getAsString();
-            double distance = currBusinessObj.get("distance").getAsJsonPrimitive().getAsDouble();
+            String phone = currBusinessObj.getAsJsonPrimitive("display_phone").getAsString();
+            double distance = currBusinessObj.getAsJsonPrimitive("distance").getAsDouble();
 
             // Make API calls here
             String reviews = getReviews(id);
 
             // get coordinates
             JsonObject coordinateObj = currBusinessObj.getAsJsonObject("coordinates");
-            double lat = coordinateObj.get("latitude").getAsJsonPrimitive().getAsDouble();
-            double lon = coordinateObj.get("longitude").getAsJsonPrimitive().getAsDouble();
+            double lat = coordinateObj.getAsJsonPrimitive("latitude").getAsDouble();
+            double lon = coordinateObj.getAsJsonPrimitive("longitude").getAsDouble();
 
             // get address
             JsonObject locationObj = currBusinessObj.getAsJsonObject("location");
@@ -179,7 +180,7 @@ public class YelpGetter {
 
             // build current business
             Business currBusiness = new Business(name, lat, lon, reviewCount, rating, price, address, phone, distance,
-                    categories, reviews);
+                    categories, id, reviews);
 
             // add current business to businesses array
             businesses[businessIndex] = currBusiness;

@@ -3,6 +3,8 @@
  */
 package src;
 
+import java.util.Arrays;
+
 /**
  * @author Matthew
  *
@@ -19,9 +21,10 @@ public class Business {
     private double distance;
     private Category[] categories;
     private String reviews;
+    private String id;
 
     public Business(String name, double lat, double lon, int reviewCount, double rating, String price, String address,
-            String phone, double distance, Category[] categories, String reviews) {
+            String phone, double distance, Category[] categories, String id, String reviews) {
         this.name = name;
         this.lat = lat;
         this.lon = lon;
@@ -32,7 +35,15 @@ public class Business {
         this.phone = phone;
         this.distance = distance;
         this.categories = categories;
+        this.id = id;
         this.setReviews(reviews);
+    }
+
+    @Override
+    public String toString() {
+        return "Business [name=" + name + ", reviewCount=" + reviewCount + ", rating=" + rating + ", price=" + price
+                + ", address=" + address + ", phone=" + phone + ", distance=" + distance + ", categories="
+                + Arrays.toString(categories) + ", reviews=" + reviews + ", id=" + id + "]";
     }
 
     /**
@@ -98,13 +109,6 @@ public class Business {
      */
     public Category[] getCategories() {
         return this.categories;
-    }
-
-    @Override
-    public String toString() {
-        return getName() + " || Review Count = " + getReviewCount() + " || Rating = " + getRating() + " || Price = "
-                + getPrice() + " || Address = " + getAddress() + " || Phone = " + getPhone() + " || Distance = "
-                + getDistance();
     }
 
     /**
