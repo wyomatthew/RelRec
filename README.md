@@ -10,6 +10,12 @@ Pulling from our project proposal, we have the following 6 high level tasks:
 ### 1. Take user inputed location and search to build query
 This is TODO. Later on, we'd like to use document search ideas plus cosine similarity to return the best businesses matching the user input. To do this, we need to be able to take in a user query and construct the vector we will use to compare against all business vectors when available. We need to make a few decisions here:
 * What metrics should we take from the user and what should be autofilled by the program? For example, I believe we will definitely want to autofill the rating field (since the user will always want the highest rated locations). Still, we will definitely want to take a user inputed restaurant type to compare against our business.
+
+Want from user:
+- Category
+- Price range (localized for region)
+- 
+
 * What information should we parse from the user search query as a category vs what should we parse for the document search for reviews? For example, if the user inputs Pizza, should we only get business from the Yelp API that say pizza? Or should we use that for document search in the review similarity portion? Both?
 
 ### 2. Translate user inputed location into data interpretable by Yelp API

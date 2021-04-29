@@ -142,7 +142,7 @@ public class YelpGetter {
             // get coordinates
             JsonObject coordinateObj = currBusinessObj.getAsJsonObject("coordinates");
             double lat = coordinateObj.getAsJsonPrimitive("latitude").getAsDouble();
-            double lon = coordinateObj.getAsJsonPrimitive().getAsDouble();
+            double lon = coordinateObj.getAsJsonPrimitive("longitude").getAsDouble();
 
             // get address
             JsonObject locationObj = currBusinessObj.getAsJsonObject("location");
