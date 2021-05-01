@@ -13,8 +13,19 @@ This is TODO. Later on, we'd like to use document search ideas plus cosine simil
 
 Want from user:
 - Category
-- Price range (localized for region)
-- 
+- Price range (localized for region, parsed to double quantity of currency signs)
+- Search query (for reviews)
+- latitude
+- longitude
+
+Also, in an overloaded constructor for testing/crazy people who want a terribly reviewed place:
+- Category
+- Price range
+- Search query
+- Distance
+- Reviews
+- latitude
+- longitude
 
 * What information should we parse from the user search query as a category vs what should we parse for the document search for reviews? For example, if the user inputs Pizza, should we only get business from the Yelp API that say pizza? Or should we use that for document search in the review similarity portion? Both?
 
