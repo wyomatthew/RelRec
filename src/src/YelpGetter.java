@@ -14,21 +14,17 @@ import uk.recurse.geocoding.reverse.ReverseGeocoder;
  * @author Matthew
  * 
  */
-
-
-/*
- * Test comment
- */
-
 public class YelpGetter {
     // initialize fields
     private String request;
+    private static final String reqBaseReviews = "https://api.yelp.com/v3/businesses/";
     private static final String reqBaseBusiness = "https://api.yelp.com/v3/businesses/search?";
     private static final String reqBaseCategory = "https://api.yelp.com/v3/categories?";
     private static final String key = "Bearer y0ygyyghI5JK4vcMW4MNgi3-wY_k6pSIVOEg9g-g34WPp9kJJZS9uRrV_WQTt2FulH4Ni1axPQ3dAmXo0d8jPs1izmltTQ1Z1xa9bznUN3dZcqZw2SRbzAV8S4F0YHYx";
     private static final double[] MATTHEWS_HOUSE = new double[] { 39.95556, -75.21339 };
     private static final double[] GUADALAJARA = new double[] { 20.666841, -103.361932 };
     private static final double[] ROME = new double[] { 41.8933203, 12.4829321 };
+    private static final String TEST_ID = "8jNOl4h8Z6iibXxY6Tx3vQ";
 
     /**
      * Constructs YelpGetter from inputted coordinates, search radius, and relevant
@@ -127,27 +123,27 @@ public class YelpGetter {
             JsonObject currBusinessObj = businessesArr.get(businessIndex).getAsJsonObject();
 
             // get all relevant primitive fields
-            String name = currBusinessObj.get("name").getAsJsonPrimitive().getAsString();
-            String id = currBusinessObj.get("id").getAsJsonPrimitive().getAsString();
+            String name = currBusinessObj.getAsJsonPrimitive("name").getAsString();
+            String id = currBusinessObj.getAsJsonPrimitive("id").getAsString();
 
-            int reviewCount = currBusinessObj.get("review_count").getAsJsonPrimitive().getAsInt();
-            double rating = currBusinessObj.get("rating").getAsJsonPrimitive().getAsDouble();
+            int reviewCount = currBusinessObj.getAsJsonPrimitive("review_count").getAsInt();
+            double rating = currBusinessObj.getAsJsonPrimitive("rating").getAsDouble();
             String price;
             try {
-                price = currBusinessObj.get("price").getAsJsonPrimitive().getAsString();
+                price = currBusinessObj.getAsJsonPrimitive("price").getAsString();
             } catch (Exception e) {
                 price = "Pricing Unknown";
             }
-            String phone = currBusinessObj.get("display_phone").getAsJsonPrimitive().getAsString();
-            double distance = currBusinessObj.get("distance").getAsJsonPrimitive().getAsDouble();
+            String phone = currBusinessObj.getAsJsonPrimitive("display_phone").getAsString();
+            double distance = currBusinessObj.getAsJsonPrimitive("distance").getAsDouble();
 
-            // Make API calls here
+            // get reviews
             String reviews = getReviews(id);
 
             // get coordinates
             JsonObject coordinateObj = currBusinessObj.getAsJsonObject("coordinates");
-            double lat = coordinateObj.get("latitude").getAsJsonPrimitive().getAsDouble();
-            double lon = coordinateObj.get("longitude").getAsJsonPrimitive().getAsDouble();
+            double lat = coordinateObj.getAsJsonPrimitive("latitude").getAsDouble();
+            double lon = coordinateObj.getAsJsonPrimitive("longitude").getAsDouble();
 
             // get address
             JsonObject locationObj = currBusinessObj.getAsJsonObject("location");
@@ -194,18 +190,51 @@ public class YelpGetter {
         // return filled array of businesses
         return businesses;
     }
-
+    
+   
     /**
-     * Helper functions of good use: - getContentsFromRequest() : Gets big string of
-     * Json from request URL - parseJsonStringToObject() : Gets JsonObject given
-     * Json big String
+     * Makes request and gets contents from request URL. Parses reviews and 
+     * returns their concatenated version. 
      * 
-     * @param id
+     * @param id business id
      * @return Concatenated huge String of three reviews
      */
     public String getReviews(String id) {
-        return null;
+    	//Make a request and get and create a string array of reviews
+        String request = reqBaseReviews + id + "/reviews";
+        String rawContents = getContentsFromRequest(request);
+        JsonObject reviewObj = parseJsonStringToObject(rawContents);
+        JsonArray reviewsArr = reviewObj.get("reviews").getAsJsonArray();
+        int numReviews = reviewsArr.size();
+//        String[] reviews = new String[numReviews];
+
+        // iterate through reviews to create a final string
+        String finalReview = "";
+        for (int reviewIndex = 0; reviewIndex < numReviews; reviewIndex++) {
+            // get current review object from array
+            JsonObject currReviewObj = reviewsArr.get(reviewIndex).getAsJsonObject();
+
+            // get all relevant primitive fields
+            String rev = currReviewObj.get("text").getAsJsonPrimitive().getAsString();
+            finalReview += rev;
+        }
+        return finalReview;
     }
+ 
+    
+    
+
+//    /**
+//     * Helper functions of good use: - getContentsFromRequest() : Gets big string of
+//     * Json from request URL - parseJsonStringToObject() : Gets JsonObject given
+//     * Json big String
+//     * 
+//     * @param id
+//     * @return Concatenated huge String of three reviews
+//     */
+//    public String getReviews(String id) {
+//        return null;
+//    }
 
     /**
      * @return request

@@ -104,7 +104,7 @@ public class Business {
     public String toString() {
         return getName() + " || Review Count = " + getReviewCount() + " || Rating = " + getRating() + " || Price = "
                 + getPrice() + " || Address = " + getAddress() + " || Phone = " + getPhone() + " || Distance = "
-                + getDistance();
+                + getDistance() + " || Reviews = " + reviews;
     }
 
     /**
