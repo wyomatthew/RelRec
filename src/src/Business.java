@@ -36,7 +36,7 @@ public class Business {
         this.distance = distance;
         this.categories = categories;
         this.id = id;
-        this.setReviews(reviews);
+        this.reviews = reviews;
     }
 
     @Override
@@ -109,13 +109,6 @@ public class Business {
      */
     public Category[] getCategories() {
         return this.categories;
-    }
-  
-    @Override
-    public String toString() {
-        return getName() + " || Review Count = " + getReviewCount() + " || Rating = " + getRating() + " || Price = "
-                + getPrice() + " || Address = " + getAddress() + " || Phone = " + getPhone() + " || Distance = "
-                + getDistance() + " || Reviews = " + reviews;
     }
 
     /**
