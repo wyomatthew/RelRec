@@ -110,19 +110,19 @@ public class Business {
     public Category[] getCategories() {
         return this.categories;
     }
+  
+    @Override
+    public String toString() {
+        return getName() + " || Review Count = " + getReviewCount() + " || Rating = " + getRating() + " || Price = "
+                + getPrice() + " || Address = " + getAddress() + " || Phone = " + getPhone() + " || Distance = "
+                + getDistance() + " || Reviews = " + reviews;
+    }
 
     /**
      * @return the reviews
      */
     public String getReviews() {
         return reviews;
-    }
-
-    /**
-     * @param reviews the reviews to set
-     */
-    public void setReviews(String reviews) {
-        this.reviews = reviews;
     }
 
 }
