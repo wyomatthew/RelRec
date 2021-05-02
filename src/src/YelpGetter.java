@@ -17,6 +17,7 @@ import uk.recurse.geocoding.reverse.ReverseGeocoder;
 public class YelpGetter {
     // initialize fields
     private String request;
+    private static final String reqBaseReviews = "https://api.yelp.com/v3/businesses/";
     private static final String reqBaseBusiness = "https://api.yelp.com/v3/businesses/search?";
     private static final String reqBaseCategory = "https://api.yelp.com/v3/categories?";
     private static final String key = "Bearer y0ygyyghI5JK4vcMW4MNgi3-wY_k6pSIVOEg9g-g34WPp9kJJZS9uRrV_WQTt2FulH4Ni1axPQ3dAmXo0d8jPs1izmltTQ1Z1xa9bznUN3dZcqZw2SRbzAV8S4F0YHYx";
@@ -189,18 +190,52 @@ public class YelpGetter {
         // return filled array of businesses
         return businesses;
     }
-
+    
+    
     /**
-     * Helper functions of good use: - getContentsFromRequest() : Gets big string of
-     * Json from request URL - parseJsonStringToObject() : Gets JsonObject given
-     * Json big String
+     * Makes request and gets contents from request URL. Parses reviews and 
+     * returns their concatenated version. 
      * 
-     * @param id
+     * @param id business id
      * @return Concatenated huge String of three reviews
      */
     public String getReviews(String id) {
-        return null;
+    	//Make a request and get and create a string array of reviews
+        String request = reqBaseReviews + id + "/reviews";
+        String rawContents = getContentsFromRequest(request);
+        JsonObject reviewObj = parseJsonStringToObject(rawContents);
+        JsonArray reviewsArr = reviewObj.get("reviews").getAsJsonArray();
+        int numReviews = reviewsArr.size();
+        String[] reviews = new String[numReviews];
+
+        // iterate through reviews to create a final string
+        String finalReview = "";
+        for (int reviewIndex = 0; reviewIndex < numReviews; reviewIndex++) {
+            // get current review object from array
+            JsonObject currReviewObj = reviewsArr.get(reviewIndex).getAsJsonObject();
+
+            // get all relevant primitive fields
+            String rev = currReviewObj.get("text").getAsJsonPrimitive().getAsString();
+            finalReview += rev;
+        }
+        return finalReview;
     }
+    
+    
+    
+    
+
+//    /**
+//     * Helper functions of good use: - getContentsFromRequest() : Gets big string of
+//     * Json from request URL - parseJsonStringToObject() : Gets JsonObject given
+//     * Json big String
+//     * 
+//     * @param id
+//     * @return Concatenated huge String of three reviews
+//     */
+//    public String getReviews(String id) {
+//        return null;
+//    }
 
     /**
      * @return request
@@ -355,6 +390,8 @@ public class YelpGetter {
     }
 
     public static void main(String[] args) {
+    	System.out.println("This is line one \n this is line 2 \n this is line 3");
+    	
         YelpGetter yg = new YelpGetter(51.514295, -0.093757, 40000, "Pizza");
         yg.printAllBusinesses();
     }
