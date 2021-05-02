@@ -181,7 +181,7 @@ public class YelpGetter {
 
             // build current business
             Business currBusiness = new Business(name, lat, lon, reviewCount, rating, price, address, phone, distance,
-                    categories, reviews);
+                    categories, id, reviews);
 
             // add current business to businesses array
             businesses[businessIndex] = currBusiness;
