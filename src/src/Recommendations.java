@@ -45,7 +45,9 @@ public class Recommendations {
 	}
 	
 	
-	
+	/**
+	 * Initializes panel
+	 */
 	@SuppressWarnings("serial")
     private static void initUI() {
         // init all of the UI elements
@@ -66,7 +68,7 @@ public class Recommendations {
 		distance.setColumns(10);
 		rating.setColumns(10);
         
-        // add the action listeners
+        // add the action listener to the recommendations button
 		getRecommendations.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -112,7 +114,19 @@ public class Recommendations {
         mainFrame.add(topBar, BorderLayout.NORTH);
     }
 	
-
+	/**
+	 * Takes in user input, does cosine similarity of user query and businesses reviews, 
+	 * creates vectors of user and businesses and gives recommendation of businesses based 
+	 * on the angle between user and business vectors. The larger the cosine, the higher the 
+	 * business is in recommendation list
+	 * @param cat category
+	 * @param price price
+	 * @param query user query
+	 * @param lat latitude
+	 * @param lon longitude
+	 * @param distance radius
+	 * @param rating rating 
+	 */
 	static void getRecommendations(String cat, String price, String query, String lat,
 			String lon, String distance, String rating) {
 		//getAllBusinesses from YelpGetter
@@ -136,7 +150,6 @@ public class Recommendations {
 		}
 		
 		//do cosine similarity on complete "vectors" of businesses
-		
 		//instantiate vectors for user and businesses
 		ArrayList<Double> userElements = new ArrayList<Double>();
 		userElements.add(Double.parseDouble(price));
@@ -155,23 +168,34 @@ public class Recommendations {
 			vectorList.add(new Vector<Double>(businessElements));
 		}
 		
-		//compute angle between user input vector and business vectors
+		//compute cosine of angle between user input vector and business vectors
 		Map<Double, Business> unsortedCosMap = new TreeMap<>();
 		for (int i = 0; i < businesses.length; i++) {
 			double cos = cosineSimilarity(vectorList.get(i), userVector);
 			businesses[i].setCosOfAngleWithUserVec(cos);
 			unsortedCosMap.put(cos, businesses[i]);
 		}
+		//Get the top businesses, display them for the user
 		ArrayList<Business> recommendedBusinesses = topBusinesses(unsortedCosMap, 5);
-       try {
-           JOptionPane.showMessageDialog(mainFrame, "names of top businesses");
-       } catch (Exception e) {
-           showErrorMessage("An exception was thrown during execution");
-       }
+		String toDisplay = "";
+		for (int i = 0; i < recommendedBusinesses.size(); i++) {
+			toDisplay += i + ". " + recommendedBusinesses.get(i).getName() + "\n";
+		}
+	    try {
+	        JOptionPane.showMessageDialog(null, toDisplay);
+	    } catch (Exception e) {
+	        showErrorMessage("An exception was thrown during execution");
+	    }
 		
 	}
 	
-	
+	/**
+	 * sorts the input map of cosines and businesses and returns specified number of top 
+	 * businesses
+	 * @param cosMap cosine-business map
+	 * @param numTop number of top businesses
+	 * @return list of recommended businesses
+	 */
 	static ArrayList<Business> topBusinesses(Map<Double, Business> cosMap, int numTop) {
 		ArrayList<Business> topList = new ArrayList<Business>();
 		Map<Double, Business> sortedMap = new TreeMap<>(cosMap);
@@ -184,7 +208,11 @@ public class Recommendations {
 		return topList;
 	}
 	
-	
+	/**
+	 * Computes the magnitude of a vector
+	 * @param v vector to compute a magnitude of
+	 * @return magnitude of a vector
+	 */
 	static double getMagnitude(Vector<Double> v) {
 		double magnitude = 0;
 		
@@ -197,6 +225,12 @@ public class Recommendations {
 		return Math.sqrt(magnitude);
 	}
 	
+	/**
+	 * Computed dot product of two vectors
+	 * @param vec1
+	 * @param vec2
+	 * @return dot product value
+	 */
 	static double dotProduct(Vector<Double> vec1, Vector<Double> vec2) {
 		double product = 0;
 		for (int i = 0; i < vec1.size(); i++) {
@@ -205,12 +239,21 @@ public class Recommendations {
 		return product;
 	}
 	
+	/**
+	 * Computed cosine of an angle between two vectors
+	 * @param vec1
+	 * @param vec2
+	 * @return cosine of an angle
+	 */
 	static double cosineSimilarity(Vector<Double> vec1, Vector<Double> vec2) {
 		return dotProduct(vec1, vec2) / (getMagnitude(vec1) * getMagnitude(vec2));
 	}
 	
 	
-	
+	/**
+	 * Displays error message
+	 * @param message
+	 */
 	static void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
