@@ -10,7 +10,7 @@ import java.util.Set;
  * This class represents one document. It will keep track of the term
  * frequencies.
  * 
- * @author swapneel
+ * @author swapneel, Tina
  *
  */
 public class Document implements Comparable<Document> {
@@ -22,37 +22,35 @@ public class Document implements Comparable<Document> {
     private HashMap<String, Integer> termFrequency;
 
     /**
-     * The name of the file to read.
+     * Reviews to process.
      */
-    private String filename;
+    private String reviews;
 
     /**
-     * The constructor. It takes in the name of a file to read. It will read the
-     * file and pre-process it.
+     * The constructor. It takes in the reviews as a String. It will read the
+     * reviews and pre-process it.
      * 
-     * @param filename the name of the file
+     * @param reviews reviews to process
      */
-    public Document(String filename) {
-        this.filename = filename;
+    public Document(String reviews) {
+        this.reviews = reviews;
         termFrequency = new HashMap<String, Integer>();
-
-        readFileAndPreProcess();
+        readAndPreProcess();
     }
 
     /**
-     * This method will read in the file and do some pre-processing. The following
+     * This method will read the reviews and do some pre-processing. The following
      * things are done in pre-processing: Every word is converted to lower case.
      * Every character that is not a letter or a digit is removed. We don't do any
-     * stemming. Once the pre-processing is done, we create and update the
+     * stemming. Once the pre-processing is done, we create and update the termFrequency map.
      */
-    private void readFileAndPreProcess() {
-        try {
-            Scanner in = new Scanner(new File(filename));
-            System.out.println("Reading file: " + filename + " and preprocessing");
-
-            while (in.hasNext()) {
-                String nextWord = in.next();
-
+    private void readAndPreProcess() {
+        System.out.println("Reading reviews and preprocessing");
+        String[] words = reviews.split(" ");                   //???????
+        
+        for (int i = 0; i < words.length; i++) {
+            String nextWord = words[i];
+            if (nextWord != null) {
                 String filteredWord = nextWord.replaceAll("[^A-Za-z0-9�?É�?ÓÚáéíóúñ]", "").toLowerCase();
 
                 if (!(filteredWord.equalsIgnoreCase(""))) {
@@ -64,8 +62,6 @@ public class Document implements Comparable<Document> {
                     }
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -93,27 +89,8 @@ public class Document implements Comparable<Document> {
         return termFrequency.keySet();
     }
 
-    @Override
-    /**
-     * The overriden method from the Comparable interface.
-     */
-    public int compareTo(Document other) {
-        return filename.compareTo(other.getFileName());
-    }
-
-    /**
-     * @return the filename
-     */
-    private String getFileName() {
-        return filename;
-    }
-
-    /**
-     * This method is used for pretty-printing a Document object.
-     * 
-     * @return the filename
-     */
-    public String toString() {
-        return filename;
-    }
+	@Override
+	public int compareTo(Document o) {
+		return 0;
+	}
 }

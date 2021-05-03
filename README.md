@@ -23,6 +23,7 @@ Also, in an overloaded constructor for testing/crazy people who want a terribly 
 - Price range
 - Search query
 - Distance
+- Rating
 - Reviews
 - latitude
 - longitude

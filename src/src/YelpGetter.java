@@ -389,9 +389,7 @@ public class YelpGetter {
         return element.getAsJsonObject();
     }
 
-    public static void main(String[] args) {
-    	System.out.println("This is line one \n this is line 2 \n this is line 3");
-    	
+    public static void main(String[] args) {    	
         YelpGetter yg = new YelpGetter(51.514295, -0.093757, 40000, "Pizza");
         yg.printAllBusinesses();
     }

@@ -15,12 +15,14 @@ public class Business {
     private double lon;
     private int reviewCount;
     private double rating;
-    private String price;
+    private double price;
     private String address;
     private String phone;
     private double distance;
     private Category[] categories;
     private String reviews;
+    private double reviewsCosSimilarity;
+    private double cosOfAngleWithUserVector;
     private String id;
 
     public Business(String name, double lat, double lon, int reviewCount, double rating, String price, String address,
@@ -30,13 +32,16 @@ public class Business {
         this.lon = lon;
         this.reviewCount = reviewCount;
         this.rating = rating;
-        this.price = price;
         this.address = address;
         this.phone = phone;
         this.distance = distance;
         this.categories = categories;
         this.id = id;
         this.setReviews(reviews);
+        
+        //??????? price conversion
+        this.price = price.length();
+        
     }
 
     @Override
@@ -45,6 +50,42 @@ public class Business {
                 + ", address=" + address + ", phone=" + phone + ", distance=" + distance + ", categories="
                 + Arrays.toString(categories) + ", reviews=" + reviews + ", id=" + id + "]";
     }
+    
+    /**
+     * Sets cosine of angle between business vector and user vector
+     * @param cosine
+     */
+    public void setCosOfAngleWithUserVec(double cosine) {
+    	this.cosOfAngleWithUserVector = cosine;
+    }
+    
+
+    /**
+     * Gets cosine of angle between business vector and user vector
+     * @return
+     */
+    public double setCosOfAngleWithUserVec() {
+    	return cosOfAngleWithUserVector;
+    }
+    
+    
+    /**
+     * Set how how much reviews are similar to query
+     * @param revSimilarityToQuery
+     */
+    public void setReviewsCosSimilarity(double revSimilarityToQuery) {
+    	this.reviewsCosSimilarity = revSimilarityToQuery;
+    }
+    
+
+    /**
+     * Get how how much reviews are similar to query
+     * @return reviewsCosSimilarity
+     */
+    public double getReviewsCosSimilarity() {
+    	return reviewsCosSimilarity;
+    }
+    
 
     /**
      * @return the name
@@ -78,7 +119,7 @@ public class Business {
     /**
      * @return the price
      */
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
