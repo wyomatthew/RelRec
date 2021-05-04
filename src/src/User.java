@@ -18,14 +18,14 @@ public class User {
 	
 	public static void main(String[] args) throws IOException {
 		//gets the user input from the category text field
-		Recommendations recommend = new Recommendations();
-		String input = recommend.getCat();
-		
+//		Recommendations recommend = new Recommendations();
+//		String input = recommend.getCat();
+//		
 		//adds new search to store in the user txt file
-		String mostFreqSearch = addUserSearch(input);
+		String mostFreqSearch = addUserSearch("pizza", "Bob");
 		
 		//creates list of friend recommendations based on triadic closure
-		List<String> friendRecs = highestFreq(mostFreqSearch);
+		List<String> friendRecs = highestFreq(mostFreqSearch, "Bob");
 		
 		//iterates through the list of friend recommendations to present to user
 		for (String friend : friendRecs) {
@@ -39,20 +39,39 @@ public class User {
 	 * @param userInputSearch String that user input into the category text field
 	 * @return String representing the highest frequency category search
 	 */
-	public static String addUserSearch(String userInputSearch) throws IOException {
-		//Creates the writer to edit the user txt file and update with any searches
-		Writer output;
-		output = new BufferedWriter(new FileWriter("src/you.txt", true));  //clears file every time
-		
-		//adds the user category input into the user txt file to store
-		output.append(userInputSearch);
-		output.append("\n"); //separates the search
-		
-		//closes the txt file
-		output.close(); 
+	public static String addUserSearch(String userInputSearch, String user) throws IOException {
+        File file = new File("src/" + user + ".txt");
+        if (!file.exists()) {
+        	file.createNewFile();
+        	PrintWriter pw = new PrintWriter(file);
+            pw.println(userInputSearch);
+            pw.close();
+            
+            //adds the name of the new user in the users txt file
+            Writer output;
+    		output = new BufferedWriter(new FileWriter("src/users.txt", true));  
+    		
+    		//adds the user category input into the user txt file to store
+    		output.append(user);
+    		output.append("\n"); //separates the search
+    		
+    		//closes the txt file
+    		output.close();
+        }else{
+        	//Creates the writer to edit the user txt file and update with any searches
+    		Writer output;
+    		output = new BufferedWriter(new FileWriter("src/" + user + ".txt", true));  //clears file every time
+    		
+    		//adds the user category input into the user txt file to store
+    		output.append(userInputSearch);
+    		output.append("\n"); //separates the search
+    		
+    		//closes the txt file
+    		output.close();
+        } 
 		
 		//Creates input stream and scanner
-		FileInputStream fin = new FileInputStream("src/you.txt");
+		FileInputStream fin = new FileInputStream("src/" + user + ".txt");
 		Scanner yourFile = new Scanner(fin);
 		
 		//creates hash map to store the frequency of the categories
@@ -131,7 +150,7 @@ public class User {
 	}
 	
 	// Scans through all of the users to return the highest frequency
-	public static List<String> highestFreq(String mostFrequentSearch) throws IOException, FileNotFoundException {
+	public static List<String> highestFreq(String mostFrequentSearch, String userName) throws IOException, FileNotFoundException {
 		//Creates input stream and scanner
 		FileInputStream fin = new FileInputStream("src/users.txt");
 		Scanner scan = new Scanner(fin);
@@ -145,17 +164,22 @@ public class User {
 		//iterates through the user file an compares the frequency of the category searches to return highest
 		while(scan.hasNext()) {
 			String user = scan.next().toLowerCase();
-			int userFreq = scanFileFreq(user, mostFrequentSearch);
-			//updates friend recommendation of new highest frequency user
-			if (userFreq > highest) {
-				highest = userFreq;
-				highestUser.clear();
-				highestUser.add(user);
-			//adds to friend recommendation if multiple users have highest frequency
-			} else if (userFreq == highest) {
-				highestUser.add(user);
-			//no changes if lower frequency
-			} else {
+			String loginUser = userName.toLowerCase();
+			if (!user.equals(loginUser)) {
+				int userFreq = scanFileFreq(user, mostFrequentSearch);
+				//updates friend recommendation of new highest frequency user
+				if (userFreq > highest) {
+					highest = userFreq;
+					highestUser.clear();
+					highestUser.add(user);
+				//adds to friend recommendation if multiple users have highest frequency
+				} else if (userFreq == highest) {
+					highestUser.add(user);
+				//no changes if lower frequency
+				} else {
+					continue;
+				}
+			}else {
 				continue;
 			}
 		}

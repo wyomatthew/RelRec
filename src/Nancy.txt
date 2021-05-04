@@ -6,5 +6,4 @@ Soup
 Coffee
 Coffee
 Coffee
-Pizza
 Coffee
