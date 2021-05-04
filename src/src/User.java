@@ -7,7 +7,7 @@ import java.io.*;
 /**
  * This class implements the friend recommendations feature through
  * triadic closure of the history of searches from other users compared
- * to the current user's searches
+ * to the current user's searches.
  * 
  * @author Nancy
  *
@@ -35,15 +35,19 @@ public class User {
 	
 	/**
 	 * This method adds the user category input into the user's search history and 
-	 * and then computes the most frequent searched category.
+	 * and then computes the most frequent searched category. If there is a new user,
+	 * then this method will generate a new txt file for the user.
 	 * @param userInputSearch String that user input into the category text field
 	 * @return String representing the highest frequency category search
 	 */
 	public static String addUserSearch(String userInputSearch, String user) throws IOException {
-        File file = new File("src/" + user + ".txt");
+        //Creates a file with the current user name
+		File file = new File("src/" + user + ".txt");
+		//Checks if the user is a returning user or new user
         if (!file.exists()) {
-        	file.createNewFile();
+        	file.createNewFile(); //creates a new file
         	PrintWriter pw = new PrintWriter(file);
+        	//writes the latest user search to the txt file
             pw.println(userInputSearch);
             pw.close();
             
@@ -149,7 +153,13 @@ public class User {
 //		}
 	}
 	
-	// Scans through all of the users to return the highest frequency
+	/**
+	 * This method scans through all the user files and then returns the highest 
+	 * frequency of the most searched word of the logged in user
+	 * @param mostFrequentSearch String that holds the most frequent word of the logged in user
+	 * @param userName String that is the current user's name
+	 * @return List<String> of the recommended friends based off of triadic closure
+	 */
 	public static List<String> highestFreq(String mostFrequentSearch, String userName) throws IOException, FileNotFoundException {
 		//Creates input stream and scanner
 		FileInputStream fin = new FileInputStream("src/users.txt");
