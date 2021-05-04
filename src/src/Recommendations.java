@@ -31,6 +31,8 @@ public class Recommendations {
 	
 	static JPanel topBar;
 	
+	public static String input;
+	
 	
 	public static void main(String[] args) {
         mainFrame = new JFrame("Recommendations");
@@ -84,6 +86,7 @@ public class Recommendations {
                     		queryReview.getText(), latitude.getText(),
                     		longitude.getText(), distance.getText(),
                     		rating.getText());
+                    input = category.getText();
             		category.setColumns(10);
             		priceRange.setColumns(10);
             		queryReview.setColumns(10);
@@ -91,9 +94,14 @@ public class Recommendations {
             		longitude.setColumns(10);
             		distance.setColumns(10);
             		rating.setColumns(10);
+            		
                 }
             }
-        });
+		}
+		
+	);
+		
+		
         
         
         // construct the UI
@@ -114,6 +122,12 @@ public class Recommendations {
         mainFrame.add(topBar, BorderLayout.NORTH);
     }
 	
+	private static void getInput() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	/**
 	 * Takes in user input, does cosine similarity of user query and businesses reviews, 
 	 * creates vectors of user and businesses and gives recommendation of businesses based 
@@ -169,7 +183,7 @@ public class Recommendations {
 		}
 		
 		//compute cosine of angle between user input vector and business vectors
-		Map<Double, Business> unsortedCosMap = new TreeMap<>();
+		Map<Double, Business> unsortedCosMap = new TreeMap<Double, Business>();
 		for (int i = 0; i < businesses.length; i++) {
 			double cos = cosineSimilarity(vectorList.get(i), userVector);
 			businesses[i].setCosOfAngleWithUserVec(cos);
@@ -198,7 +212,7 @@ public class Recommendations {
 	 */
 	static ArrayList<Business> topBusinesses(Map<Double, Business> cosMap, int numTop) {
 		ArrayList<Business> topList = new ArrayList<Business>();
-		Map<Double, Business> sortedMap = new TreeMap<>(cosMap);
+		Map<Double, Business> sortedMap = new TreeMap<Double, Business>(cosMap);
 		Set<Double> keySet = sortedMap.keySet();
 		ArrayList<Double> keyList = new ArrayList<Double>(keySet);
 		int size = sortedMap.size();
@@ -249,6 +263,9 @@ public class Recommendations {
 		return dotProduct(vec1, vec2) / (getMagnitude(vec1) * getMagnitude(vec2));
 	}
 	
+	public String getCat() {
+    	return category.getText();
+    }
 	
 	/**
 	 * Displays error message
