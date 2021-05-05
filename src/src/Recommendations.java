@@ -14,20 +14,21 @@ import java.awt.event.FocusEvent;
  */
 
 public class Recommendations {
-    public static final int SCREEN_WIDTH = 1000;
+    public static final int SCREEN_WIDTH = 1100;
     public static final int SCREEN_HEIGHT = 100;
 	
 	static JFrame mainFrame;
 	
 	static JButton getRecommendations;
 	
-	static TextField category;
-	static TextField priceRange;
-	static TextField queryReview;
-	static TextField latitude;
-	static TextField longitude;
-	static TextField distance;
-	static TextField rating;
+	static HintTextField category;
+	static HintTextField priceRange;
+	static HintTextField queryReview;
+	static HintTextField latitude;
+	static HintTextField longitude;
+	static HintTextField radius;
+	static HintTextField distance;
+	static HintTextField rating;
 	
 	static JPanel topBar;
 	
@@ -42,6 +43,13 @@ public class Recommendations {
         initUI();
         
         mainFrame.setVisible(true);
+        
+        //-----------Testing---------------
+//        getRecommendations("pizza", "1",
+//        		"tasty, love, great, spot, sssss", "39.95556", 
+//        		"-75.21339", "30000",
+//        		"5");
+        //---------------------------------
 	}
 	
 	
@@ -52,13 +60,14 @@ public class Recommendations {
     private static void initUI() {
         // init all of the UI elements
 		getRecommendations = new JButton("Get Recommendations");
-		category = new TextField("Food Category");
-		priceRange = new TextField("Price Range");
-		queryReview = new TextField("Describe Place/Category");
-		latitude = new TextField("Latitude");
-		longitude = new TextField("Longitude");
-		distance = new TextField("Distance");
-		rating = new TextField("Rating");
+		category = new HintTextField("Food Category");
+		priceRange = new HintTextField("Price Range");
+		queryReview = new HintTextField("Description");
+		latitude = new HintTextField("Latitude");
+		longitude = new HintTextField("Longitude");
+		distance = new HintTextField("Distance");
+		radius = new HintTextField("Radius");
+		rating = new HintTextField("Rating");
 		
 		category.setColumns(10);
 		priceRange.setColumns(10);
@@ -66,6 +75,7 @@ public class Recommendations {
 		latitude.setColumns(10);
 		longitude.setColumns(10);
 		distance.setColumns(10);
+		radius.setColumns(10);
 		rating.setColumns(10);
         
         // add the action listener to the recommendations button
@@ -75,21 +85,20 @@ public class Recommendations {
                 if (category.getText().length() == 0 || priceRange.getText().length() == 0 ||
                 		queryReview.getText().length() == 0 || latitude.getText().length() == 0 ||
                 		longitude.getText().length() == 0 || distance.getText().length() == 0 ||
-                		rating.getText().length() == 0) {
+                		radius.getText().length() == 0 || rating.getText().length() == 0) {
                     showErrorMessage("Empty Input");
                 } else {
-//                	System.out.println(category.getText());
-//                	System.out.println(priceRange.getText());
                     getRecommendations(category.getText(), priceRange.getText(),
                     		queryReview.getText(), latitude.getText(),
                     		longitude.getText(), distance.getText(),
-                    		rating.getText());
+                    		radius.getText(), rating.getText());
             		category.setColumns(10);
             		priceRange.setColumns(10);
             		queryReview.setColumns(10);
             		latitude.setColumns(10);
             		longitude.setColumns(10);
             		distance.setColumns(10);
+            		radius.setColumns(10);
             		rating.setColumns(10);
                 }
             }
@@ -106,6 +115,7 @@ public class Recommendations {
         inputPanel.add(latitude, BorderLayout.NORTH);
         inputPanel.add(longitude, BorderLayout.NORTH);
         inputPanel.add(distance, BorderLayout.NORTH);
+        inputPanel.add(radius, BorderLayout.NORTH);
         inputPanel.add(rating, BorderLayout.NORTH);
         inputPanel.add(getRecommendations, BorderLayout.NORTH);
         
@@ -128,22 +138,23 @@ public class Recommendations {
 	 * @param rating rating 
 	 */
 	static void getRecommendations(String cat, String price, String query, String lat,
-			String lon, String distance, String rating) {
+			String lon, String distance, String radius, String rating) {
 		//getAllBusinesses from YelpGetter
 		YelpGetter yelp = new YelpGetter(Double.parseDouble(lat), Double.parseDouble(lon), 
-				Integer.parseInt(distance), cat);
+				Integer.parseInt(radius), cat);
 		Business[] businesses = yelp.getBusinesses();
 		//do cosine similarity on reviews of businesses and query
-		//make documents of reviews
+		//create documents for reviews
 		ArrayList<Document> docList = new ArrayList<Document>();
 		for (int i= 0; i < businesses.length; i++) {
 			docList.add(new Document(businesses[i].getReviews()));
 		}
 		Document userQuery = new Document(query);
+		docList.add(userQuery);
 		Corpus corpus = new Corpus(docList);
 		VectorSpaceModel vectorSpace = new VectorSpaceModel(corpus);
 		
-		for (int i = 0; i < docList.size(); ) {
+		for (int i = 0; i < docList.size() - 1; i++) {
 			Document doc = docList.get(i);
 			//Set reviews cosSimilarity of a business
 			businesses[i].setReviewsCosSimilarity(vectorSpace.cosineSimilarity(userQuery, doc));
@@ -156,16 +167,16 @@ public class Recommendations {
 		userElements.add(Double.parseDouble(distance));
 		userElements.add(Double.parseDouble(rating));
 		userElements.add(1.0);
-		Vector<Double> userVector = new Vector<Double>(userElements);
+		ArrayList<Double> userVector = new ArrayList<Double>(userElements);
 		
-		ArrayList<Vector<Double>> vectorList = new ArrayList<Vector<Double>>();
+		ArrayList<ArrayList<Double>> vectorList = new ArrayList<ArrayList<Double>>();
 		for (int i = 0; i < businesses.length; i++) {
 			ArrayList<Double> businessElements = new ArrayList<Double>();
-			userElements.add(businesses[i].getPrice());
-			userElements.add(businesses[i].getDistance());
-			userElements.add(businesses[i].getRating());
-			userElements.add(businesses[i].getReviewsCosSimilarity());
-			vectorList.add(new Vector<Double>(businessElements));
+			businessElements.add(businesses[i].getPrice());
+			businessElements.add(businesses[i].getDistance());
+			businessElements.add(businesses[i].getRating());
+			businessElements.add(businesses[i].getReviewsCosSimilarity());
+			vectorList.add(businessElements);
 		}
 		
 		//compute cosine of angle between user input vector and business vectors
@@ -175,12 +186,17 @@ public class Recommendations {
 			businesses[i].setCosOfAngleWithUserVec(cos);
 			unsortedCosMap.put(cos, businesses[i]);
 		}
+
+		
 		//Get the top businesses, display them for the user
 		ArrayList<Business> recommendedBusinesses = topBusinesses(unsortedCosMap, 5);
 		String toDisplay = "";
 		for (int i = 0; i < recommendedBusinesses.size(); i++) {
-			toDisplay += i + ". " + recommendedBusinesses.get(i).getName() + "\n";
+			toDisplay += i + 1 + ". " + recommendedBusinesses.get(i).getName() + "\n";
 		}
+		//-------Testing------
+//		System.out.println(toDisplay);
+		//--------------------
 	    try {
 	        JOptionPane.showMessageDialog(null, toDisplay);
 	    } catch (Exception e) {
@@ -213,7 +229,7 @@ public class Recommendations {
 	 * @param v vector to compute a magnitude of
 	 * @return magnitude of a vector
 	 */
-	static double getMagnitude(Vector<Double> v) {
+	static double getMagnitude(ArrayList<Double> v) {
 		double magnitude = 0;
 		
 		Iterator<Double> it = v.iterator();
@@ -231,7 +247,7 @@ public class Recommendations {
 	 * @param vec2
 	 * @return dot product value
 	 */
-	static double dotProduct(Vector<Double> vec1, Vector<Double> vec2) {
+	static double dotProduct(ArrayList<Double> vec1, ArrayList<Double> vec2) {
 		double product = 0;
 		for (int i = 0; i < vec1.size(); i++) {
 			product += vec1.get(i) * vec2.get(i);
@@ -245,7 +261,7 @@ public class Recommendations {
 	 * @param vec2
 	 * @return cosine of an angle
 	 */
-	static double cosineSimilarity(Vector<Double> vec1, Vector<Double> vec2) {
+	static double cosineSimilarity(ArrayList<Double> vec1, ArrayList<Double> vec2) {
 		return dotProduct(vec1, vec2) / (getMagnitude(vec1) * getMagnitude(vec2));
 	}
 	
@@ -257,5 +273,47 @@ public class Recommendations {
 	static void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
-    
+	
+	
+
+}
+
+/**
+ * Text field class with a hint. It shows a hint when field is empty
+ */
+@SuppressWarnings("serial")
+class HintTextField extends JTextField implements FocusListener {
+
+    private final String hint;
+    private boolean showHint;
+
+    public HintTextField(final String hint) {
+        super(hint);
+        this.hint = hint;
+        this.showHint = true;
+        super.addFocusListener(this);
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        if (this.getText().isEmpty()) {
+            super.setText("");
+            showHint = false;
+        }
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        if (this.getText().isEmpty()) {
+            super.setText(hint);
+            showHint = true;
+        }
+    }
+
+    @Override
+    public String getText() {
+        return showHint ? "" : super.getText();
+    }
+	
+	
 }
