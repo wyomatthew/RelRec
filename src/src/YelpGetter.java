@@ -191,7 +191,6 @@ public class YelpGetter {
         return businesses;
     }
     
-   
     /**
      * Makes request and gets contents from request URL. Parses reviews and 
      * returns their concatenated version. 
@@ -206,7 +205,8 @@ public class YelpGetter {
         JsonObject reviewObj = parseJsonStringToObject(rawContents);
         JsonArray reviewsArr = reviewObj.get("reviews").getAsJsonArray();
         int numReviews = reviewsArr.size();
-//        String[] reviews = new String[numReviews];
+        String[] reviews = new String[numReviews];
+
 
         // iterate through reviews to create a final string
         String finalReview = "";
@@ -220,7 +220,6 @@ public class YelpGetter {
         }
         return finalReview;
     }
- 
     
     
 
@@ -365,7 +364,7 @@ public class YelpGetter {
         List<String> contents = url.getContents();
 
         // return first and only string of contents
-        return contents.get(0);
+            return contents.get(0);
     }
 
     /**
@@ -388,7 +387,7 @@ public class YelpGetter {
         return element.getAsJsonObject();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {    	
         YelpGetter yg = new YelpGetter(51.514295, -0.093757, 40000, "Pizza");
         yg.printAllBusinesses();
     }
