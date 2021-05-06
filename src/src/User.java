@@ -159,7 +159,12 @@ public class User {
 		//closing file
 		userFile.close();
 		
-		Integer freqSearch = searchMap.get(mostFrequentSearch.toLowerCase());
+		Integer freqSearch = 0;
+		
+		if (searchMap.containsKey(mostFrequentSearch)) {
+			freqSearch = searchMap.get(mostFrequentSearch.toLowerCase());
+		}
+		
 		return freqSearch;
 		
 		//*******if want to print out frequency map to double check*****
