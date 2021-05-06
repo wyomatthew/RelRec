@@ -7,3 +7,5 @@ Pizza
 Coffee
 Burger
 Chinese
+Pizza
+Georgian

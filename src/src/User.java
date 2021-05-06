@@ -15,22 +15,38 @@ import java.io.*;
 
 public class User {
 	
-	
-	public static void main(String[] args) throws IOException {
-		//gets the user input from the category text field
-//		Recommendations recommend = new Recommendations();
-//		String input = recommend.getCat();
-//		
-		//adds new search to store in the user txt file
-		String mostFreqSearch = addUserSearch("pizza", "Bob");
-		
-		//creates list of friend recommendations based on triadic closure
-		List<String> friendRecs = highestFreq(mostFreqSearch, "Bob");
-		
-		//iterates through the list of friend recommendations to present to user
-		for (String friend : friendRecs) {
-			System.out.println(friend); //******** do we want to add this to the GUI******
-		}
+	/**
+	 * @param category Category to add to user's searches
+	 * @param name Name of user to make search for
+	 * @return Friend recommendation given search history
+	 */
+	public static String getFriendRecommendation(String category, String name) {
+	       //gets the user input from the category text field
+//      Recommendations recommend = new Recommendations();
+//      String input = recommend.getCat();
+//      
+        //adds new search to store in the user txt file
+        String mostFreqSearch;
+        try {
+            // get most frequent search
+            mostFreqSearch = addUserSearch(category, name);
+            
+            //creates list of friend recommendations based on triadic closure
+            List<String> friendRecs = highestFreq(mostFreqSearch, name);
+            
+            String recs = "";
+            //iterates through the list of friend recommendations to present to user
+            for (String friend : friendRecs) {
+                recs += friend + " ";
+            }
+            
+            return recs;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return "";
 	}
 	
 	/**
@@ -173,9 +189,8 @@ public class User {
 		
 		//iterates through the user file an compares the frequency of the category searches to return highest
 		while(scan.hasNext()) {
-			String user = scan.next().toLowerCase();
-			String loginUser = userName.toLowerCase();
-			if (!user.equals(loginUser)) {
+			String user = scan.next();
+			if (!user.equalsIgnoreCase(userName)) {
 				int userFreq = scanFileFreq(user, mostFrequentSearch);
 				//updates friend recommendation of new highest frequency user
 				if (userFreq > highest) {
