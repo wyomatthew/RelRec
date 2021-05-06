@@ -39,7 +39,6 @@ public class Business {
         this.id = id;
         this.setReviews(reviews);
         
-        //??????? price conversion
         this.price = price.length();
         
     }

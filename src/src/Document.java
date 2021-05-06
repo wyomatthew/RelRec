@@ -10,7 +10,7 @@ import java.util.Set;
  * This class represents one document. It will keep track of the term
  * frequencies.
  * 
- * @author swapneel, Tina
+ * @author swapneel
  *
  */
 public class Document implements Comparable<Document> {
@@ -45,8 +45,7 @@ public class Document implements Comparable<Document> {
      * stemming. Once the pre-processing is done, we create and update the termFrequency map.
      */
     private void readAndPreProcess() {
-        System.out.println("Reading reviews and preprocessing");
-        String[] words = reviews.split(" ");                   //???????
+        String[] words = reviews.split(" ");             
         
         for (int i = 0; i < words.length; i++) {
             String nextWord = words[i];

@@ -39,9 +39,7 @@ public class Corpus {
 	/**
 	 * This method will create an inverted index.
 	 */
-	private void createInvertedIndex() {
-		System.out.println("Creating the inverted index");
-		
+	private void createInvertedIndex() {	
 		for (Document document : documents) {
 			Set<String> terms = document.getTermList();
 			
