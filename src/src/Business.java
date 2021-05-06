@@ -37,7 +37,7 @@ public class Business {
         this.distance = distance;
         this.categories = categories;
         this.id = id;
-        this.setReviews(reviews);
+        this.reviews = reviews;
         this.price = price.length();
 
     }
