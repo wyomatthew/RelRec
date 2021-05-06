@@ -35,7 +35,10 @@ This is TODO. There are some important design decisions to make here:
 * How many businesses do we want to recommend?
 * What information do we want to include with the recommendation? i.e. do we want to just deliver the recommendation? Or also include why that store was recommended?
 
-### 6. Deliver recommendations to users
+### 6. Deliver friend recommendations to users
+This feature delivers the users friend recommendations based on triadic closure property. The most frequent search of th euser is recommendated to become friends withsomeone else who has used the applicationa nd also searched the the same category search most frequently out of everyone. 
+
+### 7. Deliver recommendations to users
 This is TODO. I think this step is mainly just icing-on-top-the-cake. This could be as simple as 
 ```Java
 System.out.println(recommendations.toString());
@@ -58,6 +61,9 @@ Defines a Category class to handle all necessary fields, constructors, and metho
 Degines a YelpGetter class to handle creation and execution of API calls to the Yelp API. Has an overloaded constructor allowing for the creation of an API call with or without a specifified category to search within. However, every created YelpGetter.java must be called with an inputted latitude, longitude, and search radius. Contains several helper functions managing what constitutes a legal category, how to parse out a received JSON file, and how to get the JSON file associated with a URL request.
 
 At a high level, YelpGetter.java functions with just one field: the URL to follow to interact with the Yelp API. Since every API call to the Yelp API must include a latitude and longitude, those are necessary elements to construct the YelpGetter. The radius is an added necessary input to create the URL because I believe the radius of the businesses to get is a necessary feature. The category is an optional element of the URL because the Yelp API allows the making of calls that are and aren't specified by category. Once a YelpGetter is created and the URL field is created, one can call the ``getBusinesses()`` method to retrieve all businesses returned by the Yelp API for that particular request.
+
+### Users.java
+Defines a users class that delivers friend recommendations to the user based on traidc closure of the most frequent category searches. The class creates methods that reads into txt files that represent every user that has logged into the application. The txt files are read and a hash map that creates a frequency chart of the category and the frequency of those user's category searches is created. The freuqences are then compared agaisnt the user's most frequent category and then using triadic closrue, a friend recommendation based on the most freuqnet category searches is generated and then returned.
 
 ## External Libraries
 We take advantage of two external libraries:
