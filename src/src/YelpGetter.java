@@ -137,7 +137,7 @@ public class YelpGetter {
             String phone = currBusinessObj.getAsJsonPrimitive("display_phone").getAsString();
             double distance = currBusinessObj.getAsJsonPrimitive("distance").getAsDouble();
 
-            // Make API calls here
+            // get reviews
             String reviews = getReviews(id);
 
             // get coordinates
@@ -191,7 +191,6 @@ public class YelpGetter {
         return businesses;
     }
     
-    
     /**
      * Makes request and gets contents from request URL. Parses reviews and 
      * returns their concatenated version. 
@@ -208,6 +207,7 @@ public class YelpGetter {
         int numReviews = reviewsArr.size();
         String[] reviews = new String[numReviews];
 
+
         // iterate through reviews to create a final string
         String finalReview = "";
         for (int reviewIndex = 0; reviewIndex < numReviews; reviewIndex++) {
@@ -220,8 +220,6 @@ public class YelpGetter {
         }
         return finalReview;
     }
-    
-    
     
     
 

@@ -38,9 +38,8 @@ public class Business {
         this.categories = categories;
         this.id = id;
         this.setReviews(reviews);
-        
         this.price = price.length();
-        
+
     }
 
     @Override
@@ -156,13 +155,6 @@ public class Business {
      */
     public String getReviews() {
         return reviews;
-    }
-
-    /**
-     * @param reviews the reviews to set
-     */
-    public void setReviews(String reviews) {
-        this.reviews = reviews;
     }
 
 }
