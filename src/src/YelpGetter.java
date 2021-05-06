@@ -366,7 +366,7 @@ public class YelpGetter {
         List<String> contents = url.getContents();
 
         // return first and only string of contents
-        return contents.get(0);
+            return contents.get(0);
     }
 
     /**
