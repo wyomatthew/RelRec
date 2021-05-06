@@ -14,13 +14,14 @@ import java.awt.event.FocusEvent;
  */
 
 public class Recommendations {
-    public static final int SCREEN_WIDTH = 1100;
+    public static final int SCREEN_WIDTH = 1300;
     public static final int SCREEN_HEIGHT = 100;
 	
 	static JFrame mainFrame;
 	
 	static JButton getRecommendations;
 	
+	static HintTextField name;
 	static HintTextField category;
 	static HintTextField priceRange;
 	static HintTextField queryReview;
@@ -62,6 +63,7 @@ public class Recommendations {
     private static void initUI() {
         // init all of the UI elements
 		getRecommendations = new JButton("Get Recommendations");
+		name = new HintTextField("Name");
 		category = new HintTextField("Food Category");
 		priceRange = new HintTextField("Price Range");
 		queryReview = new HintTextField("Description");
@@ -71,6 +73,7 @@ public class Recommendations {
 		radius = new HintTextField("Radius");
 		rating = new HintTextField("Rating");
 		
+		name.setColumns(10);
 		category.setColumns(10);
 		priceRange.setColumns(10);
 		queryReview.setColumns(10);
@@ -84,7 +87,7 @@ public class Recommendations {
 		getRecommendations.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (category.getText().length() == 0 || priceRange.getText().length() == 0 ||
+                if (name.getText().length() == 0 || category.getText().length() == 0 || priceRange.getText().length() == 0 ||
                 		queryReview.getText().length() == 0 || latitude.getText().length() == 0 ||
                 		longitude.getText().length() == 0 || distance.getText().length() == 0 ||
                 		radius.getText().length() == 0 || rating.getText().length() == 0) {
@@ -95,6 +98,7 @@ public class Recommendations {
                     		longitude.getText(), distance.getText(),
                     		radius.getText(), rating.getText());
 
+                    name.setColumns(10);
             		category.setColumns(10);
             		priceRange.setColumns(10);
             		queryReview.setColumns(10);
@@ -117,6 +121,7 @@ public class Recommendations {
         topBar = new JPanel();
         JPanel inputPanel = new JPanel();
 
+        inputPanel.add(name, BorderLayout.NORTH);
         inputPanel.add(category, BorderLayout.NORTH);
         inputPanel.add(priceRange, BorderLayout.NORTH);
         inputPanel.add(queryReview, BorderLayout.NORTH);
@@ -203,11 +208,15 @@ public class Recommendations {
 
 		
 		//Get the top businesses, display them for the user
-		ArrayList<Business> recommendedBusinesses = topBusinesses(unsortedCosMap, 5);
+		int numBusinesses = businesses.length;
+		ArrayList<Business> recommendedBusinesses = topBusinesses(unsortedCosMap, Math.min(numBusinesses, 5));
 		String toDisplay = "";
 		for (int i = 0; i < recommendedBusinesses.size(); i++) {
 			toDisplay += i + 1 + ". " + recommendedBusinesses.get(i).getName() + "\n";
 		}
+		
+		String friendRec = User.getFriendRecommendation(cat, name.getText());
+		toDisplay += "\n\nYou should be friends with " + friendRec + "!";
 		//-------Testing------
 //		System.out.println(toDisplay);
 		//--------------------
