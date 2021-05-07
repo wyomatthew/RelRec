@@ -4,8 +4,11 @@ RelRec is a program utilizing the Yelp API to take a user's inputed geocoordinat
 
 ## Categories Used
 Social Networks
+
 Physical Networks (Internet)
+
 Recommendations
+
 Advanced topics related to the class (privacy in social networks, recommendations, etc.)
 
 
@@ -79,57 +82,6 @@ Note that the program might take a while to run. Also, sometimes we get an error
 when program makes API calls. Please, if this happens just re-press the "Get Recommendations"
 button. It should fix it. 
 
-## Project Skeleton
-Pulling from our project proposal, we have the following 6 high level tasks:
-
-### 1. Take user inputed location and search to build query
-We'd like to use document search ideas plus cosine similarity to return the best businesses matching the user input. To do this, we need to be able to take in a user query and construct the vector we will use to compare against all business vectors when available. We need to make a few decisions here:
-* What metrics should we take from the user and what should be autofilled by the program? For example, I believe we will definitely want to autofill the rating field (since the user will always want the highest rated locations). Still, we will definitely want to take a user inputed restaurant type to compare against our business.
-
-Want from user:
-- Category
-- Price range (localized for region, parsed to double quantity of currency signs)
-- Search query (for reviews)
-- latitude
-- longitude
-
-Also, in an overloaded constructor for testing/crazy people who want a terribly reviewed place:
-- Category
-- Price range
-- Search query
-- Distance
-- Radius
-- Rating
-- latitude
-- longitude
-
-
-### 2. Translate user inputed location into data interpretable by Yelp API
-We can consider implementing some more reverse geocoding to accept a user inputed address or use other external tools to use device location, but this is functional as is with latitude and longitude.
-
-### 2. Call Yelp API to get reviews per location
-This is mostly completed. We need to complete the ``getReviews()`` method to also retrieve that when pulling all relevant businesses.
-
-### 3. Form individual business vectors
-This is TODO. We need to take each business and all of its metrics to form one vector we can compare against the user query to return the best businesses. We should choose here what information to include in each vector.
-
-### 4. Compute cosine similarity of each business to user query
-This is TODO. However, we have a nice equation for computing cosine similarity so this should be a pretty fast implementation. It's also worth noting here that I believe cosine similarity takes all dimensions of the vector as essentially weighted equally, so perhaps we should decide if its worth weighting certain fields.
-
-### 5. Deliver recommendations
-There are some important design decisions to make here:
-* How many businesses do we want to recommend?
-* What information do we want to include with the recommendation? i.e. do we want to just deliver the recommendation? Or also include why that store was recommended?
-
-### 6. Deliver friend recommendations to users
-This feature delivers the users friend recommendations based on triadic closure property. The most frequent search of th euser is recommendated to become friends withsomeone else who has used the applicationa nd also searched the the same category search most frequently out of everyone. 
-
-### 7. Deliver recommendations to users
-I think this step is mainly just icing-on-top-the-cake. This could be as simple as 
-```Java
-System.out.println(recommendations.toString());
-```
-Or could be as complicated as building out a user interface. I think we should gauge how far we want to go on this step by how fast the other, more necessary steps go.
 
 ## Project Design
 For the time being, the src folder includes the following classes:
@@ -187,3 +139,6 @@ We take advantage of two external libraries:
 Used under the Apache-2.0 License
 * [Gson by Google Inc.](https://github.com/google/gson)
 Used under the Apache-2.0 License
+
+## Corpus.java, Document.java, VectorSpaceModel.java
+VectorSppace Model from class.
