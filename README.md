@@ -13,7 +13,7 @@ Advanced topics related to the class (privacy in social networks, recommendation
 
 
 ## Work Breakdown
-Matthew Pickering - 
+Matthew Pickering - implemented all helper functions for getting and parsing API calls from Yelp API in YelpGetter.java. In addition, implemented Business.java and Category.java to handle responses from Yelp API. The most important implemented methods include ``getBusinesses()``, ``getValidCategories()``, ``getContentsFromRequest()``, and ``parseJsonStringToObject()``. Finally, implemented static variables at top of YelpGetter to permit easy testing and building of requests.
 
 Tinatin Kokoshvili - implemented ``getReviews()`` function that gets reviews of appropriate businesses from Yelp API.
        implemented ``Recommendations`` class, which handles GUI and user interaction, does cosine similarity
