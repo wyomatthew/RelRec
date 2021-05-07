@@ -13,15 +13,15 @@ Advanced topics related to the class (privacy in social networks, recommendation
 
 
 ## Work Breakdown
-Matthew - 
+Matthew Pickering - 
 
-Tina - implemented ``getReviews()`` function that gets reviews of appropriate businesses from Yelp API.
+Tinatin Kokoshvili - implemented ``getReviews()`` function that gets reviews of appropriate businesses from Yelp API.
        implemented ``Recommendations`` class, which handles GUI and user interaction, does cosine similarity
        of user's description and reviews of business, creates vectors of user and businesses with appropriate 
        entries, computed angle between them, sorts the businesses, and displays top (up to 5) businesses to the user. 
 
 
-Nancy- implemented ``users`` class that gets the category and name that the user types into the GUI text fields and then adds them to a history log for the user stored under txt files. The ``users`` class provides friend recommendations based on the triadic closure property where the most frequent category search history is the common characteristic between the user and recommended friend.
+Nancy Zhu- implemented ``users`` class that gets the category and name that the user types into the GUI text fields and then adds them to a history log for the user stored under txt files. The ``users`` class provides friend recommendations based on the triadic closure property where the most frequent category search history is the common characteristic between the user and recommended friend.
 
 ## Setting up the project
 Check user manual pdf.
