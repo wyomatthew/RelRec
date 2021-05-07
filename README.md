@@ -21,7 +21,7 @@ Tina - implemented ``getReviews()`` function that gets reviews of appropriate bu
        entries, computed angle between them, sorts the businesses, and displays top (up to 5) businesses to the user. 
 
 
-Nancy -
+Nancy- implemented ``users`` class that gets the category and name that the user types into the GUI text fields and then adds them to a history log for the user stored under txt files. The ``users`` class provides friend recommendations based on the triadic closure property where the most frequent category search history is the common characteristic between the user and recommended friend.
 
 ## Setting up the project
 TODO
