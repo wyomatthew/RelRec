@@ -46,13 +46,6 @@ public class Recommendations {
         initUI();
         
         mainFrame.setVisible(true);
-        
-        //-----------Testing---------------
-//        getRecommendations("pizza", "1",
-//        		"tasty, love, great, spot, sssss", "39.95556", 
-//        		"-75.21339", "30000",
-//        		"5");
-        //---------------------------------
 	}
 	
 	
@@ -64,7 +57,7 @@ public class Recommendations {
         // init all of the UI elements
 		getRecommendations = new JButton("Get Recommendations");
 		name = new HintTextField("Name");
-		category = new HintTextField("Food Category");
+		category = new HintTextField("Category");
 		priceRange = new HintTextField("Price Range");
 		queryReview = new HintTextField("Description");
 		latitude = new HintTextField("Latitude");
@@ -87,16 +80,46 @@ public class Recommendations {
 		getRecommendations.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (name.getText().length() == 0 || category.getText().length() == 0 || priceRange.getText().length() == 0 ||
-                		queryReview.getText().length() == 0 || latitude.getText().length() == 0 ||
+            	String cat = "";
+            	String price = "";
+            	String description = "";
+            	String lat = "";
+            	String lon = "";
+            	String dis = "";
+            	String rad = "";
+            	String rat = "";
+                if (name.getText().length() == 0 || category.getText().length() == 0 || 
+                		priceRange.getText().length() == 0 ||
+                        queryReview.getText().length() == 0 || latitude.getText().length() == 0 ||
                 		longitude.getText().length() == 0 || distance.getText().length() == 0 ||
                 		radius.getText().length() == 0 || rating.getText().length() == 0) {
                     showErrorMessage("Empty Input");
                 } else {
-                    getRecommendations(category.getText(), priceRange.getText(),
-                    		queryReview.getText(), latitude.getText(),
-                    		longitude.getText(), distance.getText(),
-                    		radius.getText(), rating.getText());
+                	cat = category.getText();
+                	price = priceRange.getText();
+                	description = queryReview.getText();
+                	lat = latitude.getText();
+                	lon = longitude.getText();
+                	dis = distance.getText();
+                	rad = radius.getText();
+                	rat = rating.getText();
+                	if (priceRange.getText().length() == 0) {
+                		price = "0";
+                	}
+                	if (distance.getText().length() == 0) {
+                		dis = "0";
+                	}
+                	if (radius.getText().length() == 0) {
+                		rad = "30000";
+                	}
+                	if (rating.getText().length() == 0) {
+                		rat = "5";
+                	}
+                	
+                    getRecommendations(cat, price,
+                    		description, lat,
+                    		lon, dis,
+                    		rad, rat);
 
                     name.setColumns(10);
             		category.setColumns(10);
@@ -107,16 +130,12 @@ public class Recommendations {
             		distance.setColumns(10);
             		radius.setColumns(10);
             		rating.setColumns(10);
-            		
                 }
             }
 		}
 		
 	);
-		
-		
-        
-        
+	
         // construct the UI
         topBar = new JPanel();
         JPanel inputPanel = new JPanel();
@@ -137,10 +156,6 @@ public class Recommendations {
         mainFrame.add(topBar, BorderLayout.NORTH);
     }
 	
-	private static void getInput() {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 	/**
@@ -201,11 +216,10 @@ public class Recommendations {
 		//compute cosine of angle between user input vector and business vectors
 		Map<Double, Business> unsortedCosMap = new TreeMap<Double, Business>();
 		for (int i = 0; i < businesses.length; i++) {
-			double cos = cosineSimilarity(vectorList.get(i), userVector);
+			double cos = angleBetween(vectorList.get(i), userVector);
 			businesses[i].setCosOfAngleWithUserVec(cos);
 			unsortedCosMap.put(cos, businesses[i]);
 		}
-
 		
 		//Get the top businesses, display them for the user
 		int numBusinesses = businesses.length;
@@ -217,19 +231,15 @@ public class Recommendations {
 		
 		String friendRec = User.getFriendRecommendation(cat, name.getText());
 		toDisplay += "\n\nYou should be friends with " + friendRec + "!";
-		//-------Testing------
-//		System.out.println(toDisplay);
-		//--------------------
 	    try {
 	        JOptionPane.showMessageDialog(null, toDisplay);
 	    } catch (Exception e) {
 	        showErrorMessage("An exception was thrown during execution");
 	    }
-		
 	}
 	
 	/**
-	 * sorts the input map of cosines and businesses and returns specified number of top 
+	 * Sorts the input map of cosines and businesses and returns specified number of top 
 	 * businesses
 	 * @param cosMap cosine-business map
 	 * @param numTop number of top businesses
@@ -240,8 +250,7 @@ public class Recommendations {
 		Map<Double, Business> sortedMap = new TreeMap<Double, Business>(cosMap);
 		Set<Double> keySet = sortedMap.keySet();
 		ArrayList<Double> keyList = new ArrayList<Double>(keySet);
-		int size = sortedMap.size();
-		for (int i = size - 1; i > size - 1 - numTop; i--) {
+		for (int i = 0; i < numTop; i++) {
 			topList.add(sortedMap.get(keyList.get(i)));
 		}
 		return topList;
@@ -284,7 +293,7 @@ public class Recommendations {
 	 * @param vec2
 	 * @return cosine of an angle
 	 */
-	static double cosineSimilarity(ArrayList<Double> vec1, ArrayList<Double> vec2) {
+	static double angleBetween(ArrayList<Double> vec1, ArrayList<Double> vec2) {
 		return dotProduct(vec1, vec2) / (getMagnitude(vec1) * getMagnitude(vec2));
 	}
 	
@@ -299,9 +308,6 @@ public class Recommendations {
 	static void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
-	
-	
-
 }
 
 /**
@@ -340,6 +346,4 @@ class HintTextField extends JTextField implements FocusListener {
     public String getText() {
         return showHint ? "" : super.getText();
     }
-	
-	
 }

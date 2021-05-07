@@ -19,3 +19,4 @@ chicken_wings
 blacksea
 tex-mex
 Food
+Pizza

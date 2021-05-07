@@ -22,9 +22,6 @@ public class User {
 	 */
 	public static String getFriendRecommendation(String category, String name) {
 	       //gets the user input from the category text field
-//      Recommendations recommend = new Recommendations();
-//      String input = recommend.getCat();
-//      
         //adds new search to store in the user txt file
         String mostFreqSearch;
         try {
@@ -42,7 +39,6 @@ public class User {
             
             return recs;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
@@ -166,12 +162,6 @@ public class User {
 		}
 		
 		return freqSearch;
-		
-		//*******if want to print out frequency map to double check*****
-//		//prints frequency map
-//		for (Map.Entry entry : searchMap.entrySet()) {
-//			System.out.println(entry.getKey() + " " + entry.getValue());
-//		}
 	}
 	
 	/**
