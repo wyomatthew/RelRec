@@ -62,7 +62,7 @@ public class Business {
      * Gets cosine of angle between business vector and user vector
      * @return
      */
-    public double setCosOfAngleWithUserVec() {
+    public double getCosOfAngleWithUserVec() {
     	return cosOfAngleWithUserVector;
     }
     
