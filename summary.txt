@@ -1,0 +1,34 @@
+--------
+RelRec
+--------
+RelRec is a program utilizing the Yelp API to take a user's inputed geocoordinates and search details to return a 
+sorted list of recommended nearby businesses. Program makes use of cosine similarity to identify businesses that 
+need to be recommended and uses triadic closure for making friend recommendations based prior users' full look-up 
+history of categories.
+
+-----------------
+Categories Used
+-----------------
+- Social Networks
+- Physical Networks (Internet)
+- Recommendations
+- Advanced topics related to the class (privacy in social networks, recommendations, etc.)
+
+
+-----------------
+Work Breakdown
+-----------------
+Matthew Pickering - implemented all helper functions for getting and parsing API calls from Yelp API in YelpGetter.java. 
+In addition, implemented Business.java and Category.java to handle responses from Yelp API. The most important 
+implemented methods include getBusinesses(), getValidCategories(), getContentsFromRequest(), and parseJsonStringToObject(). 
+Finally, implemented static variables at top of YelpGetter to permit easy testing and building of requests.
+
+Tinatin Kokoshvili - implemented getReviews() function that gets reviews of appropriate businesses from Yelp API. 
+implemented Recommendations class, which handles GUI and user interaction, does cosine similarity of user's description 
+and reviews of business, creates vectors of user and businesses with appropriate entries, computed angle between them, sorts 
+the businesses, and displays top (up to 5) businesses to the user.
+
+Nancy Zhu - implemented users class that gets the category and name that the user types into the GUI text fields and then 
+adds them to a history log for the user stored under txt files. The users class provides friend recommendations based on the 
+triadic closure property where the most frequent category search history is the common characteristic between the user and 
+recommended friend.
