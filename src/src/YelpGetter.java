@@ -20,11 +20,10 @@ public class YelpGetter {
     private static final String reqBaseReviews = "https://api.yelp.com/v3/businesses/";
     private static final String reqBaseBusiness = "https://api.yelp.com/v3/businesses/search?";
     private static final String reqBaseCategory = "https://api.yelp.com/v3/categories?";
-    private static final String key = "Bearer y0ygyyghI5JK4vcMW4MNgi3-wY_k6pSIVOEg9g-g34WPp9kJJZS9uRrV_WQTt2FulH4Ni1axPQ3dAmXo0d8jPs1izmltTQ1Z1xa9bznUN3dZcqZw2SRbzAV8S4F0YHYx";
-    private static final double[] MATTHEWS_HOUSE = new double[] { 39.95556, -75.21339 };
+    private static final String key = null; // API key omitted
     private static final double[] GUADALAJARA = new double[] { 20.666841, -103.361932 };
     private static final double[] ROME = new double[] { 41.8933203, 12.4829321 };
-    private static final String TEST_ID = "8jNOl4h8Z6iibXxY6Tx3vQ";
+    private static final String TEST_ID = null; // test ID omitted
 
     /**
      * Constructs YelpGetter from inputted coordinates, search radius, and relevant
